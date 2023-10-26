@@ -1,0 +1,108 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <unordered_map>
+
+using namespace std;
+
+/*
+    Advent of Code 2022 - 03.12.2022
+    
+    Link to the problem: https://adventofcode.com/2022/day/3
+
+    Author of the solution: Íñigo Nieto Cuadrado
+
+*/
+
+/*
+    I need to assign a priority to each letter like:
+    a = 1,  b = 2,  ... z = 26
+    A = 27, B = 28, ... Z = 52
+
+    The ascii code for lowercase letters is:ç
+    a = 97, b = 98, ... z = 122
+    A = 65, B = 66, ... Z = 52
+
+    For lowercase letters I need to substract 96, and for Uppercase, 38
+*/
+
+int obtainPriority(char c){
+
+    // Obtain ascii code
+    int ascii = int(c);
+    
+    if(ascii > 96 && ascii < 123){  // If lowercase
+        return ascii - 96;        
+    }
+    else if(ascii > 65 && ascii < 91){ // If uppercase
+        return ascii - 38;
+    }
+
+    return -1; // Error
+}
+
+int main(){
+
+    string example = "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw\n";
+    
+    // Read input data from txt file
+    fstream inputfile;
+
+    string inputData;
+
+    inputfile.open("input.txt", ios::in);
+    if(inputfile.is_open()){
+        string tp;
+        while(getline(inputfile, tp)){
+            inputData += tp;
+            inputData += "\n";
+        }
+    }
+    
+    string rucksack = "";
+
+    unordered_map <char, int> elementsFirstCompartment; // Map that will contain all the characters of the compartment
+
+    char elementInCommon = ' ';
+    int totalPriority = 0;
+
+
+    for(char c : inputData){
+
+        // Separate the rucksacks
+        if(c != '\n')
+            rucksack.push_back(c);
+        else{
+            // Divide rucksack in two compartments
+            int len = rucksack.length();
+            string firstCompartment = rucksack.substr(0, len/2);
+            string secondCompartment = rucksack.substr(len/2, len);
+
+            // Find element in common
+
+            // Fill in a map with the characters of firstCompartment
+            for(char e : firstCompartment){
+                if(!elementsFirstCompartment[e])
+                    elementsFirstCompartment[e] = 1;
+                else
+                    elementsFirstCompartment[e] ++;
+            }
+
+            for(char e : secondCompartment){
+
+                if(elementsFirstCompartment.find(e) != 0){
+                    elementInCommon = e;
+                    rucksack = "";
+                    firstCompartment = "";
+                    secondCompartment = "";
+                    elementsFirstCompartment.clear();
+                    break;
+                }
+            }
+            // Calculate priority
+            totalPriority += obtainPriority(elementInCommon);
+        }
+    }
+        cout << "The total priority is " << totalPriority << endl;
+        return 0;
+}
