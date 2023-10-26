@@ -92,15 +92,11 @@ void handleTrue(std::string action, std::vector<std::vector<std::pair<int, int>>
 
     // The action will always be: Throw to Monkey ...
     int targetMonkey = stoi(action.substr(action.find("monkey") + 7)); 
-    //std::vector<int> indexesToRemove;
     std::vector<int> elementsToRemove;
 
-    for(int i = 0; i < monkeyItems[numMonkey].size(); i++){  // I prefer to do a classic C-style loop to take count of the indexes
-        auto item = monkeyItems[numMonkey][i];
+    for(auto &item : monkeyItems[numMonkey]){
 
-        if(item.second == 0)
-            continue;
-        else{
+        if(item.second == 1){
             monkeyItems[targetMonkey].push_back(std::make_pair(item.first, -1));
             elementsToRemove.push_back(item.first);
         }
@@ -127,12 +123,9 @@ void handleFalse(std::string action, std::vector<std::vector<std::pair<int, int>
     // std::vector<int> indexesToRemove;
     std::vector<int> elementsToRemove;
 
-    for(int i = 0; i < monkeyItems[numMonkey].size(); i++){     // I prefer to do a classic C-style loop to take count of the indexes
-        auto item = monkeyItems[numMonkey][i];
+    for(auto &item : monkeyItems[numMonkey]){
 
-        if(item.second == 1)
-            continue;
-        else{
+        if(item.second == 0){
             monkeyItems[targetMonkey].push_back(std::make_pair(item.first, -1));
             elementsToRemove.push_back(item.first);
         }
