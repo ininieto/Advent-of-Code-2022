@@ -54,63 +54,54 @@ std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, i
 
     if(position == std::make_pair(0, 0)){   // Top left corner
         
-        surroundings.push_back(right); // rightElement = rows[right.first][right.second];
-        surroundings.push_back(down); // downElement = rows[down.first][down.second];
-        
+        surroundings.push_back(right);
+        surroundings.push_back(down); 
     }
     else if(position == std::make_pair(0, ncols - 1)){  // Top right corner
 
-        surroundings.push_back(left); // leftElement = rows[left.first][left.second];
-        surroundings.push_back(down); // downElement = rows[down.first][down.second];
-
+        surroundings.push_back(left);
+        surroundings.push_back(down); 
     }
     else if(position == std::make_pair(nrows - 1, 0)){  // Bottom left corner
 
-        surroundings.push_back(right); // rightElement = rows[right.first][right.second];
-        surroundings.push_back(up); // upElement = rows[up.first][up.second];
-
+        surroundings.push_back(right);
+        surroundings.push_back(up); 
     }
     else if(position == std::make_pair(nrows - 1, ncols - 1)){  // Bottom right corner
 
-        surroundings.push_back(left); // leftElement = rows[left.first][left.second];
-        surroundings.push_back(up); // upElement = rows[up.first][up.second];
-
+        surroundings.push_back(left); 
+        surroundings.push_back(up); 
     }
     else if(position.first == 0){   // First row
 
-        surroundings.push_back(left); // leftElement = rows[left.first][left.second];
-        surroundings.push_back(right); // rightElement = rows[right.first][right.second];
-        surroundings.push_back(down); // downElement = rows[down.first][down.second];
-
+        surroundings.push_back(left); 
+        surroundings.push_back(right); 
+        surroundings.push_back(down); 
     }
     else if(position.first == nrows - 1){   // Last row
 
-        surroundings.push_back(left); // leftElement = rows[left.first][left.second];
-        surroundings.push_back(right); // rightElement = rows[right.first][right.second];
-        surroundings.push_back(up); // upElement = rows[up.first][up.second];
-
+        surroundings.push_back(left); 
+        surroundings.push_back(right); 
+        surroundings.push_back(up); 
     }
     else if(position.second == 0){  // First column
 
-        surroundings.push_back(right); // rightElement = rows[right.first][right.second];
-        surroundings.push_back(up); // upElement = rows[up.first][up.second];
-        surroundings.push_back(down); // downElement = rows[down.first][down.second];
-
+        surroundings.push_back(right); 
+        surroundings.push_back(up); 
+        surroundings.push_back(down); 
     }
     else if(position.second == ncols - 1){   // Last column
 
-        surroundings.push_back(left); // leftElement = rows[left.first][left.second];
-        surroundings.push_back(up); // upElement = rows[up.first][up.second];
-        surroundings.push_back(down); // downElement = rows[down.first][down.second];
-
+        surroundings.push_back(left); 
+        surroundings.push_back(up); 
+        surroundings.push_back(down); 
     }
     else{   // No weird cases
-        surroundings.push_back(right); // rightElement = rows[right.first][right.second];
-        surroundings.push_back(left); // leftElement = rows[left.first][left.second];
-        surroundings.push_back(up); // upElement = rows[up.first][up.second];
-        surroundings.push_back(down); // downElement = rows[down.first][down.second];
+        surroundings.push_back(right); 
+        surroundings.push_back(left); 
+        surroundings.push_back(up); 
+        surroundings.push_back(down); 
     }
-
     return surroundings;
 }
 
@@ -119,6 +110,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
     std::vector<int> surroundingElements;
     std::vector<std::pair<int, int>> possibleJumps;
     int currentElement = rows[position.first][position.second];
+    int equalValues = -1;
 
     for(auto e : surroundings){
         if((rows[e.first][e.second] == currentElement || rows[e.first][e.second] == currentElement + 1) && checkedPositions.find(e) == checkedPositions.end()){  // We can only jump to the same value or 1 higher
@@ -134,6 +126,26 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
     for(auto e : surroundingElements){
         if(e > highestValue)
             highestValue = e;
+        else if(e == highestValue)
+            equalValues = e;
+    }
+
+    // Check if there are repeated values
+
+    if(equalValues != -1){
+
+        std::vector<std::pair<int, int>> repeatedValuesJumps;
+
+        for(int i = 0; i < possibleJumps.size(); i++){ // Get indexes of the equal values
+
+            if(rows[possibleJumps[i].first][possibleJumps[i].second] == equalValues)    // Get the jumps whose values are repeated
+                repeatedValuesJumps.push_back(possibleJumps[i]);
+        }
+
+        // Take a random one
+        srand((unsigned) time(NULL));   // Generate a random seed
+        int index = rand() % repeatedValuesJumps.size();
+        return possibleJumps[index];
     }
 
     // return the position associated to the highest value
@@ -148,12 +160,14 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
 
 int main(){
 
-    const int nrows = 5, ncols = 8; 
+    //const int nrows = 5, ncols = 8; 
+    const int nrows = 41, ncols = 66;
     int jumps = 0;
 
-    std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
+    //std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
+    std::string inputData = readInputText("input.txt");
     std::vector<std::vector <int>> rows(nrows, std::vector<int>(ncols));
-    std::pair position(0, 0), endPosition(-1, -1);
+    std::pair position(0, 0), startPosition(-1, -1), endPosition(-1, -1);
 
     // Fill in the rows and cols vectors with the ascii values of the characters
     int stringCount = 0;
@@ -161,47 +175,69 @@ int main(){
     for(int i = 0; i < nrows; i++){
         for(int j = 0; j < ncols; j++){
 
-            if(example[stringCount] == '\n')
+            if(inputData[stringCount] == '\n')
                 stringCount ++;
 
-            if(example[stringCount] == 'S'){
-                position = std::make_pair(i, j);
+            if(inputData[stringCount] == 'S'){
+                startPosition = std::make_pair(i, j);
                 rows[i][j] = int('a') - 1;
                 stringCount ++;
                 continue;
             }
                 
-            if(example[stringCount] == 'E'){
+            if(inputData[stringCount] == 'E'){
                 endPosition = std::make_pair(i, j);
                 rows[i][j] = int('z') + 1;
                 stringCount ++;
                 continue;
             }
-            rows[i][j] = int(example[stringCount]);
+            rows[i][j] = int(inputData[stringCount]);
             stringCount ++;
         }
     }
+
+    position = startPosition;
 
     // TODO: Investigate if Dijkstra could be interesting 
 
     std::unordered_map<std::pair<int, int>, bool> checkedPositions;
     checkedPositions[position] = true;
 
-    // Main loop
-    while(position != endPosition){
+    int lowestJumps = 0;
 
-        // Store in a vector all the surroundings
-        std::vector<std::pair<int, int>> surroundings = getSurroundings(position, nrows, ncols);
+    for(int i = 0; i < 8000; i++){
 
-        // Check the surroundings and decide a jump
-        position = jump(position, surroundings, rows, checkedPositions);
-        jumps ++;
-        checkedPositions[position] = true;
+        // Main loop
+        while (position != endPosition){
 
-        std::cout << "I'm in position " << position.first << ", " << position.second << '\n';
+            // Store in a vector all the surroundings
+            std::vector<std::pair<int, int>> surroundings = getSurroundings(position, nrows, ncols);
+
+            // Check the surroundings and decide a jump
+            std::pair<int, int> newPosition = jump(position, surroundings, rows, checkedPositions);
+
+            if (position == newPosition){
+                jumps = 999999;
+                break;
+            }
+        
+            jumps++;
+            position = newPosition;
+            checkedPositions[position] = true;
+        }
+
+        if(i == 0)
+            lowestJumps = jumps;
+        if(jumps < lowestJumps)
+            lowestJumps = jumps;
+
+        // Reset all the variables
+        position = startPosition;
+        jumps = 0;
+        checkedPositions.clear();
     }
 
-    std::cout << jumps << " jumps" << '\n';
+    std::cout << lowestJumps << " jumps";
 
     return 0;
 }
