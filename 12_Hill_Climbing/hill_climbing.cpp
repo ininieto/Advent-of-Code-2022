@@ -139,7 +139,7 @@ int main(){
     std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
     std::string inputData = readInputText("input.txt");
     std::vector<std::vector <int>> rows(nrows, std::vector<int>(ncols));
-    std::pair position(0, 0), startPosition(-1, -1), endPosition(-1, -1);
+    std::pair position(-1, -1), startPosition(-1, -1), endPosition(-1, -1);
 
     // Fill in the rows and cols vectors with the ascii values of the characters
     int stringCount = 0;
