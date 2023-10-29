@@ -1,9 +1,8 @@
 #pragma once
-#include <iostream>
 #include <vector>
-#include <unordered_map>
+
 #include "utils.cpp"
-#include <fstream>
+
 
 /*
     Advent of Code 2022 - 12.12.2022
