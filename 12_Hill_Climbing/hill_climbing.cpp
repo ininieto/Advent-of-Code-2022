@@ -155,7 +155,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
             return e;
     }
 
-    return position; // Should never reach this, but warning is annoying
+    return position; // In case there are no possible jumps, stay
 }
 
 int main(){
@@ -205,7 +205,7 @@ int main(){
 
     int lowestJumps = 0;
 
-    for(int i = 0; i < 8000; i++){
+    for(int i = 0; i < 10000000; i++){
 
         // Main loop
         while (position != endPosition){
@@ -217,7 +217,7 @@ int main(){
             std::pair<int, int> newPosition = jump(position, surroundings, rows, checkedPositions);
 
             if (position == newPosition){
-                jumps = 999999;
+                jumps = 99999999;
                 break;
             }
         
@@ -226,9 +226,13 @@ int main(){
             checkedPositions[position] = true;
         }
 
-        if(i == 0)
-            lowestJumps = jumps;
-        if(jumps < lowestJumps)
+        // Log results
+        if(i % 1000 == 0){
+            std::cout << "Iteration " << i << '\n';
+            std::cout << "Current jumps: " << lowestJumps << "\n\n";
+        }
+
+        if(i == 0 || jumps < lowestJumps)
             lowestJumps = jumps;
 
         // Reset all the variables
