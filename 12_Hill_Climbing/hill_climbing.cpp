@@ -3,7 +3,6 @@
 
 #include "utils.cpp"
 
-
 /*
     Advent of Code 2022 - 12.12.2022
 
@@ -12,6 +11,8 @@
     Author of the solution: Íñigo Nieto Cuadrado
 
 */
+
+// This function will ONLY return the adjacent elements. Won't perform any further calculation
 
 std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, int nrows, int ncols){
 
@@ -82,6 +83,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
     int currentElement = rows[position.first][position.second];
     int equalValues = -1;
 
+    // Check which of the surrounding elements are eligible to jump
     for(auto e : surroundings){
         if((rows[e.first][e.second] == currentElement || rows[e.first][e.second] == currentElement + 1) && checkedPositions.find(e) == checkedPositions.end()){  // We can only jump to the same value or 1 higher
             surroundingElements.push_back(rows[e.first][e.second]);
@@ -96,7 +98,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
     for(auto e : surroundingElements){
         if(e > highestValue)
             highestValue = e;
-        else if(e == highestValue)
+        else if(e == highestValue)  // If there exist 2 (or more) elements with the same value we'll take a random one
             equalValues = e;
     }
 
@@ -118,7 +120,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
         return possibleJumps[index];
     }
 
-    // return the position associated to the highest value
+    // Return the position associated to the highest value
 
     for(auto e : possibleJumps){
         if(rows[e.first][e.second] == highestValue)
@@ -166,9 +168,10 @@ int main(){
         }
     }
 
-    position = startPosition;
+    // Current approach: if there is more than one possible jump, take a random one. We'll iterate a lot of times and check if one of them reaches the goal
+    // Worked with the example, but it is not enough with the actual problem. Will need to implement a kind of Dijkstra Algorithm
 
-    // TODO: Investigate if Dijkstra could be interesting 
+    position = startPosition;
 
     std::unordered_map<std::pair<int, int>, bool> checkedPositions;
     checkedPositions[position] = true;
@@ -186,8 +189,8 @@ int main(){
             // Check the surroundings and decide a jump
             std::pair<int, int> newPosition = jump(position, surroundings, rows, checkedPositions);
 
-            if (position == newPosition){
-                jumps = 99999999;
+            if (position == newPosition){   // If we don't jump means that we are stuck --> Fail
+                jumps = 99999999;   // Set this large number as Infinity --> Means that the end was not reached
                 break;
             }
         
@@ -202,6 +205,7 @@ int main(){
             std::cout << "Current jumps: " << lowestJumps << "\n\n";
         }
 
+        // If first iteration, or if a lower number of steps has been found
         if(i == 0 || jumps < lowestJumps)
             lowestJumps = jumps;
 
