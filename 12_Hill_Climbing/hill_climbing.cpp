@@ -12,6 +12,19 @@
 
 */
 
+/*
+    Current approach: Define a graph (kinda tree) where the root node is the Start node.
+    The possible jumps are its children nodes. These nodes will have assigned the value (letter).
+
+    Must go through all the graph following the Dijkstra algorithm: taken a node, must check
+    all the children. Update the current distance until this point if necessary. When the end is
+    reached, the minimum number of steps is already assigned to the end node. 
+    
+    In case we needed it, it could be possible to traverse the way backwards to check the complete
+    path that minimizes the number of steps
+
+*/
+
 // This function will ONLY return the adjacent elements. Won't perform any further calculation
 
 std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, int nrows, int ncols){
