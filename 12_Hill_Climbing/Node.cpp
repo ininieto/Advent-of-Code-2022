@@ -9,14 +9,15 @@
     being the root node the S node. 
 
     How to use:
-        - Create a root node like: NonBinaryNode* root = new NonBinaryNode(NULL, "root");
-        - Create children like: NonBinaryNode* child1 = new NonBinaryNode(root, "child1");
+        - Create a root node like: Node* root = new Node(NULL, "root");
+        - Create children like: Node* child1 = new Node(root, "child1");
 */
 
 class Node{
 
 private:
     int value;  // Ascii value of the letter assigned to the node
+    std::pair<int, int> position;
     bool checked;   
 
     Node* parent;
@@ -24,11 +25,12 @@ private:
 
 public:
     // Constructor
-    Node(Node* parent, int value){
+    Node(Node* parent, std::pair<int, int> position, int value){
 
         this->parent = parent;
         if(parent)
             parent->add_child(this);
+        this->position = position;
         this->value = value;
         checked = false;
     }

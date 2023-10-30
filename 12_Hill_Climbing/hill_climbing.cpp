@@ -76,7 +76,7 @@ std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, i
     return surroundings;
 }
 
-std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> rows, std::unordered_map<std::pair<int, int>, bool> checkedPositions){
+std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> rows){
 
     std::vector<int> surroundingElements;
     std::vector<std::pair<int, int>> possibleJumps;
@@ -85,7 +85,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
 
     // Check which of the surrounding elements are eligible to jump
     for(auto e : surroundings){
-        if((rows[e.first][e.second] == currentElement || rows[e.first][e.second] == currentElement + 1) && checkedPositions.find(e) == checkedPositions.end()){  // We can only jump to the same value or 1 higher
+        if(rows[e.first][e.second] == currentElement || rows[e.first][e.second] == currentElement + 1){  // We can only jump to the same value or 1 higher
             surroundingElements.push_back(rows[e.first][e.second]);
             possibleJumps.push_back(e);
         }
@@ -170,13 +170,12 @@ int main(){
         }
     }
 
-    // Current approach: if there is more than one possible jump, take a random one. We'll iterate a lot of times and check if one of them reaches the goal
-    // Worked with the example, but it is not enough with the actual problem. Will need to implement a kind of Dijkstra Algorithm
-
     position = startPosition;
 
-    std::unordered_map<std::pair<int, int>, bool> checkedPositions;
-    checkedPositions[position] = true;
+    // Crete the root node
+    Node* Start = new Node(NULL, startPosition, int('a') - 1);
+
+    // Disclaimer: Right now it is not working, as the checkedPositions map has been deleted
 
     // Main loop
     while (position != endPosition){
@@ -185,16 +184,10 @@ int main(){
         std::vector<std::pair<int, int>> surroundings = getSurroundings(position, nrows, ncols);
 
         // Check the surroundings and decide a jump
-        std::pair<int, int> newPosition = jump(position, surroundings, rows, checkedPositions);
-
-        if (position == newPosition){   // If we don't jump means that we are stuck --> Fail
-            jumps = 99999999;   // Set this large number as Infinity --> Means that the end was not reached
-            break;
-        }
+        std::pair<int, int> newPosition = jump(position, surroundings, rows);
     
         jumps++;
         position = newPosition;
-        checkedPositions[position] = true;
     }
     
     std::cout << jumps << " jumps";
