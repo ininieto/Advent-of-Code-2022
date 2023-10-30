@@ -18,6 +18,7 @@ class Node{
 private:
     int value;  // Ascii value of the letter assigned to the node
     std::pair<int, int> position;
+    int minDistance;
     bool checked;   
 
     Node* parent;
@@ -58,6 +59,10 @@ public:
 
     int getValue(){
         return this->value;
+    }
+
+    std::pair<int, int> getPosition(){
+        return this->position;
     }
 
 };
