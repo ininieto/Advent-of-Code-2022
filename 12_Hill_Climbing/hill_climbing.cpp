@@ -89,20 +89,22 @@ std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, i
     return surroundings;
 }
 
-std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> rows){
+std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
 
     std::vector<int> surroundingElements;
     std::vector<std::pair<int, int>> possibleJumps;
-    int currentElement = rows[position.first][position.second];
+    int currentElement = grid[position.first][position.second];
     int equalValues = -1;
 
     // Check which of the surrounding elements are eligible to jump
     for(auto e : surroundings){
-        if(rows[e.first][e.second] == currentElement || rows[e.first][e.second] == currentElement + 1){  // We can only jump to the same value or 1 higher
-            surroundingElements.push_back(rows[e.first][e.second]);
+        if(grid[e.first][e.second] == currentElement || grid[e.first][e.second] == currentElement + 1){  // We can only jump to the same value or 1 higher
+            surroundingElements.push_back(grid[e.first][e.second]);
             possibleJumps.push_back(e);
         }
     }
+
+    // TODO: Add a children for every possible jump
 
     // Get the highest value of the possible surroundings --> will be the jump
 
@@ -123,7 +125,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
 
         for(int i = 0; i < possibleJumps.size(); i++){ // Get indexes of the equal values
 
-            if(rows[possibleJumps[i].first][possibleJumps[i].second] == equalValues)    // Get the jumps whose values are repeated
+            if(grid[possibleJumps[i].first][possibleJumps[i].second] == equalValues)    // Get the jumps whose values are repeated
                 repeatedValuesJumps.push_back(possibleJumps[i]);
         }
 
@@ -136,7 +138,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
     // Return the position associated to the highest value
 
     for(auto e : possibleJumps){
-        if(rows[e.first][e.second] == highestValue)
+        if(grid[e.first][e.second] == highestValue)
             return e;
     }
 
@@ -151,12 +153,12 @@ int main(){
 
     std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
     std::string inputData = readInputText("input.txt");
-    std::vector<std::vector <int>> rows(nrows, std::vector<int>(ncols));
-    std::pair position(-1, -1), startPosition(-1, -1), endPosition(-1, -1);
+    std::vector<std::vector <int>> grid(nrows, std::vector<int>(ncols));
+    std::pair startPosition(-1, -1), endPosition(-1, -1);
 
     inputData = example;
 
-    // Fill in the rows and cols vectors with the ascii values of the characters
+    // Fill in the grid vector with the ascii values of the characters
     int stringCount = 0;
 
     for(int i = 0; i < nrows; i++){
@@ -167,40 +169,43 @@ int main(){
 
             if(inputData[stringCount] == 'S'){
                 startPosition = std::make_pair(i, j);
-                rows[i][j] = int('a') - 1;
+                grid[i][j] = int('a') - 1;
                 stringCount ++;
                 continue;
             }
                 
             if(inputData[stringCount] == 'E'){
                 endPosition = std::make_pair(i, j);
-                rows[i][j] = int('z') + 1;
+                grid[i][j] = int('z') + 1;
                 stringCount ++;
                 continue;
             }
-            rows[i][j] = int(inputData[stringCount]);
+            grid[i][j] = int(inputData[stringCount]);
             stringCount ++;
         }
     }
 
-    position = startPosition;
+    Node* startNode = new Node(NULL, startPosition, int('a') - 1);
+
+    Node *currentNode = startNode;
 
     // Crete the root node
-    Node* Start = new Node(NULL, startPosition, int('a') - 1);
+
 
     // Disclaimer: Right now it is not working, as the checkedPositions map has been deleted
 
     // Main loop
-    while (position != endPosition){
+    while (currentNode->getPosition() != endPosition){
 
         // Store in a vector all the surroundings
-        std::vector<std::pair<int, int>> surroundings = getSurroundings(position, nrows, ncols);
+        std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode->getPosition(), nrows, ncols);
 
         // Check the surroundings and decide a jump
-        std::pair<int, int> newPosition = jump(position, surroundings, rows);
+        std::pair<int, int> newPosition = jump(currentNode->getPosition(), surroundings, grid);
     
         jumps++;
-        position = newPosition;
+        // position = newPosition;
+        // I already must have created the children nodes. I want something like currentNode = child;
     }
     
     std::cout << jumps << " jumps";
