@@ -26,13 +26,14 @@ private:
 
 public:
     // Constructor
-    Node(Node* parent, std::pair<int, int> position, int value){
+    Node(Node* parent, std::pair<int, int> position, int value, int minDistance){
 
         this->parent = parent;
         if(parent)
             parent->add_child(this);
         this->position = position;
         this->value = value;
+        this->minDistance = minDistance;
         checked = false;
     }
 
@@ -63,6 +64,10 @@ public:
 
     std::pair<int, int> getPosition(){
         return this->position;
+    }
+
+    int getMinDistance(){
+        return this->minDistance;
     }
 
 };

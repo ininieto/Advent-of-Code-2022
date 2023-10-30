@@ -89,24 +89,29 @@ std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, i
     return surroundings;
 }
 
-std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
+// Check the surroundings of the current node and decide which ones are eligible to jump into
 
-    std::vector<int> surroundingElements;
+std::vector<std::pair<int, int>> getPossibleJumps(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
+
     std::vector<std::pair<int, int>> possibleJumps;
     int currentElement = grid[position.first][position.second];
-    int equalValues = -1;
 
     // Check which of the surrounding elements are eligible to jump
     for(auto e : surroundings){
-        if(grid[e.first][e.second] == currentElement || grid[e.first][e.second] == currentElement + 1){  // We can only jump to the same value or 1 higher
-            surroundingElements.push_back(grid[e.first][e.second]);
+        if(grid[e.first][e.second] == currentElement || grid[e.first][e.second] == currentElement + 1)  // We can only jump to the same value or 1 higher
             possibleJumps.push_back(e);
-        }
     }
 
-    // TODO: Add a children for every possible jump
+    return possibleJumps;
+}
+
+std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
+
+    int equalValues = -1;
 
     // Get the highest value of the possible surroundings --> will be the jump
+
+    /*
 
     int highestValue = 0;
 
@@ -141,6 +146,7 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
         if(grid[e.first][e.second] == highestValue)
             return e;
     }
+    */
 
     return position; // In case there are no possible jumps, stay
 }
@@ -185,12 +191,9 @@ int main(){
         }
     }
 
-    Node* startNode = new Node(NULL, startPosition, int('a') - 1);
-
-    Node *currentNode = startNode;
-
     // Crete the root node
-
+    Node* startNode = new Node(NULL, startPosition, int('a') - 1, 0);
+    Node *currentNode = startNode;
 
     // Disclaimer: Right now it is not working, as the checkedPositions map has been deleted
 
@@ -199,6 +202,14 @@ int main(){
 
         // Store in a vector all the surroundings
         std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode->getPosition(), nrows, ncols);
+
+        // Scan the surroundings and get the ones eligible to jump into
+        std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode->getPosition(), surroundings, grid);
+
+        // Create the children nodes
+        for(auto jumpPosition : possibleJumps){
+            new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], currentNode->getMinDistance() + 1);
+        }
 
         // Check the surroundings and decide a jump
         std::pair<int, int> newPosition = jump(currentNode->getPosition(), surroundings, grid);
