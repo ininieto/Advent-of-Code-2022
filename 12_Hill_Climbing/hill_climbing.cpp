@@ -132,14 +132,16 @@ std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int
 
 int main(){
 
-    //const int nrows = 5, ncols = 8; 
-    const int nrows = 41, ncols = 66;
+    const int nrows = 5, ncols = 8; 
+    //const int nrows = 41, ncols = 66;
     int jumps = 0;
 
     std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
     std::string inputData = readInputText("input.txt");
     std::vector<std::vector <int>> rows(nrows, std::vector<int>(ncols));
     std::pair position(-1, -1), startPosition(-1, -1), endPosition(-1, -1);
+
+    inputData = example;
 
     // Fill in the rows and cols vectors with the ascii values of the characters
     int stringCount = 0;
@@ -176,46 +178,26 @@ int main(){
     std::unordered_map<std::pair<int, int>, bool> checkedPositions;
     checkedPositions[position] = true;
 
-    int lowestJumps = 0;
+    // Main loop
+    while (position != endPosition){
 
-    for(int i = 0; i < 10000000; i++){
+        // Store in a vector all the surroundings
+        std::vector<std::pair<int, int>> surroundings = getSurroundings(position, nrows, ncols);
 
-        // Main loop
-        while (position != endPosition){
+        // Check the surroundings and decide a jump
+        std::pair<int, int> newPosition = jump(position, surroundings, rows, checkedPositions);
 
-            // Store in a vector all the surroundings
-            std::vector<std::pair<int, int>> surroundings = getSurroundings(position, nrows, ncols);
-
-            // Check the surroundings and decide a jump
-            std::pair<int, int> newPosition = jump(position, surroundings, rows, checkedPositions);
-
-            if (position == newPosition){   // If we don't jump means that we are stuck --> Fail
-                jumps = 99999999;   // Set this large number as Infinity --> Means that the end was not reached
-                break;
-            }
-        
-            jumps++;
-            position = newPosition;
-            checkedPositions[position] = true;
+        if (position == newPosition){   // If we don't jump means that we are stuck --> Fail
+            jumps = 99999999;   // Set this large number as Infinity --> Means that the end was not reached
+            break;
         }
-
-        // Log results
-        if(i % 1000 == 0){
-            std::cout << "Iteration " << i << '\n';
-            std::cout << "Current jumps: " << lowestJumps << "\n\n";
-        }
-
-        // If first iteration, or if a lower number of steps has been found
-        if(i == 0 || jumps < lowestJumps)
-            lowestJumps = jumps;
-
-        // Reset all the variables
-        position = startPosition;
-        jumps = 0;
-        checkedPositions.clear();
+    
+        jumps++;
+        position = newPosition;
+        checkedPositions[position] = true;
     }
-
-    std::cout << lowestJumps << " jumps";
+    
+    std::cout << jumps << " jumps";
 
     return 0;
 }
