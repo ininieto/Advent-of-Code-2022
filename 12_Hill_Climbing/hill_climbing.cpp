@@ -11,6 +11,8 @@
 
 */
 
+// Hi :) We're on new branch
+
 // This function will ONLY return the adjacent elements. Won't perform any further calculation
 
 std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, int nrows, int ncols){
