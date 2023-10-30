@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "utils.cpp"
+#include "Node.cpp"
 
 /*
     Advent of Code 2022 - 12.12.2022
@@ -10,8 +11,6 @@
     Author of the solution: Íñigo Nieto Cuadrado
 
 */
-
-// Hi :) We're on new branch
 
 // This function will ONLY return the adjacent elements. Won't perform any further calculation
 
