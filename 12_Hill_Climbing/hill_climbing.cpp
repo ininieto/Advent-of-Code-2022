@@ -27,8 +27,9 @@
 
 // This function will ONLY return the adjacent elements. Won't perform any further calculation
 
-std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, int nrows, int ncols){
+std::vector<std::pair<int, int>> getSurroundings(Node* currentNode, int nrows, int ncols){
 
+    std::pair<int, int> position = currentNode->getPosition();
     std::vector<std::pair<int, int>> surroundings;
 
     std::pair<int, int> up = std::make_pair(position.first - 1, position.second);
@@ -91,14 +92,15 @@ std::vector<std::pair<int, int>> getSurroundings(std::pair<int, int> position, i
 
 // Check the surroundings of the current node and decide which ones are eligible to jump into
 
-std::vector<std::pair<int, int>> getPossibleJumps(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
+std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
 
+    std::pair<int, int> currentPosition = currentNode->getPosition();
     std::vector<std::pair<int, int>> possibleJumps;
-    int currentElement = grid[position.first][position.second];
+    int currentElement = grid[currentPosition.first][currentPosition.second];
 
     // Check which of the surrounding elements are eligible to jump
     for(auto e : surroundings){
-        if(grid[e.first][e.second] == currentElement || grid[e.first][e.second] == currentElement + 1)  // We can only jump to the same value or 1 higher
+        if((grid[e.first][e.second] == currentElement || grid[e.first][e.second] == currentElement + 1) && !currentNode->getChecked())  // We can only jump to the same value or 1 higher
             possibleJumps.push_back(e);
     }
 
@@ -201,18 +203,24 @@ int main(){
     while (currentNode->getPosition() != endPosition){
 
         // Store in a vector all the surroundings
-        std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode->getPosition(), nrows, ncols);
+        std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode, nrows, ncols);
 
         // Scan the surroundings and get the ones eligible to jump into
-        std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode->getPosition(), surroundings, grid);
+        std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode, surroundings, grid);
 
         // Create the children nodes
         for(auto jumpPosition : possibleJumps){
             new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], currentNode->getMinDistance() + 1);
         }
 
+        /*
         // Check the surroundings and decide a jump
         std::pair<int, int> newPosition = jump(currentNode->getPosition(), surroundings, grid);
+        */
+
+       currentNode->setChecked();   // The node is already checked. No need to check it again
+
+       // Iterate all over the children 
     
         jumps++;
         // position = newPosition;

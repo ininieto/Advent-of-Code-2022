@@ -70,4 +70,8 @@ public:
         return this->minDistance;
     }
 
+    bool getChecked(){
+        return this->checked;
+    }
+
 };
