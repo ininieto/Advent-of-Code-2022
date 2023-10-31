@@ -1,13 +1,9 @@
-/*
-#include "Node.cpp"
-#include <iostream>
-#include <vector>
-*/
+#include "dijkstra.h"
+
 #include <iostream>
 #include <vector>
 
-#include "dijkstra.h"
-#include "Node.h"
+
 
 // This function will ONLY return the adjacent elements. Won't perform any further calculation
 
