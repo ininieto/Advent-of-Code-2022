@@ -63,18 +63,20 @@ int main(){
         }
     }
 
-    int jumps = 0;
-
     // Crete the root node
     Node* startNode = new Node(NULL, startPosition, int('a') - 1, 0);
     Node *currentNode = startNode;
 
     std::vector<Node*> unexploredNodes; // I need to keep track of the unexplored Nodes
+    std::vector<Node*> allNodes;    // I need to check if a Node already exists. I guess there will be a more elegant solution rather than storing all of them
+                                    // in a vector, but life is tough sometimes. I'm in a plane and cannot check the internet 
+
+    allNodes.push_back(currentNode);
 
     // Call the dijkstra function on the Start Node. The function is recursive: will call itself throughout the graph
-    dijkstra(currentNode, unexploredNodes, grid);
+    int minJumps = dijkstra(currentNode, unexploredNodes, allNodes, grid, endPosition);
     
-    std::cout << jumps << " jumps";
+    std::cout << minJumps << " jumps";
 
     return 0;
 }

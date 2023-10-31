@@ -89,10 +89,15 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
 // This function will be recursive. It will be called for the root node, and then, it
 // will call itself for each child
 
-void dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<std::vector <int>> grid){
+int dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<Node*> allNodes, std::vector<std::vector <int>> grid, std::pair<int, int> endPosition){
 
     // Debug
-    std::cout << "Soy el nodo de " << currentNode->getPosition().first << ", " << currentNode->getPosition().second << ". Mi valor es " << currentNode->getValue() << '\n';
+    std::cout << "Soy el nodo de " << currentNode->getPosition().first << ", " << currentNode->getPosition().second << ". Mi valor es " << currentNode->getValue() << " y mi distancia es " << currentNode->getMinDistance() << '\n';
+
+    // Check if we have already finished
+    if(currentNode->getPosition() == endPosition)
+        return currentNode->getMinDistance();
+
 
     // Set the current node as explored
     currentNode->setExplored();
@@ -104,7 +109,6 @@ void dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector
             break;
         }
     }
-    
 
     // Store in a vector all the surroundings
     std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode, NROWS, NCOLS);
@@ -112,9 +116,29 @@ void dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector
     // Scan the surroundings and get the ones eligible to jump into
     std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode, surroundings, grid);
 
+
+    // TODO: Check if a Node for this position already exists before creating it
+
+
     // Create the children nodes
     for(auto jumpPosition : possibleJumps){
-        unexploredNodes.push_back(new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX));    // It won't always be a new Node --> must check if it already exists
+
+        bool existingNode = false;
+
+        // Check if a Node already exists for this position
+        for(auto node : allNodes){
+            if(node->getPosition() == jumpPosition){    // I must check ALL the nodes before creating a new one 
+                existingNode = true;
+                break;
+            }
+        }
+        if(!existingNode){
+
+            Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
+            allNodes.push_back(newNode);
+            unexploredNodes.push_back(newNode); 
+        }
+        // Should I do something if it exists??   
     }
 
     // Store all the child nodes in a vector
@@ -135,7 +159,7 @@ void dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector
     }   
 
     // Repeat the algorithm with the smallestDistanceNode
-    dijkstra(smallestDistanceNode, unexploredNodes, grid);
+    dijkstra(smallestDistanceNode, unexploredNodes, allNodes, grid, endPosition);
 
     // Set this Node* to explored and call the dijkstra function again
 
@@ -147,6 +171,4 @@ void dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector
 
     // Also, when will I stop? How can I assure that I have reached the End Node*? 
     // I will probably need to define a function checkEndNode() or something similar
-
-    // When should I set a Node* as checked?
 }
