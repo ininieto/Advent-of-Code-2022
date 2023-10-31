@@ -70,29 +70,7 @@ int main(){
 
     // Change of strategy: will change all the shifted code for a recursive function. 
 
-        // Store in a vector all the surroundings
-        std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode, NROWS, NCOLS);
-
-        // Scan the surroundings and get the ones eligible to jump into
-        std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode, surroundings, grid);
-
-        // Create the children nodes
-        for(auto jumpPosition : possibleJumps){
-            new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], currentNode->getMinDistance() + 1);
-        }
-        /*
-        // Check the surroundings and decide a jump
-        std::pair<int, int> newPosition = jump(currentNode->getPosition(), surroundings, grid);
-        */
-
-        currentNode->setChecked();   // The node is already checked. No need to check it again
-
-        // Iterate all over the children 
-
-        jumps++;
-        // position = newPosition;
-        // I already must have created the children nodes. I want something like currentNode = child;
-
+    dijkstra(currentNode, grid);
     
     std::cout << jumps << " jumps";
 

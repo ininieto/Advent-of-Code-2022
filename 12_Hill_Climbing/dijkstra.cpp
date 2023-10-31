@@ -91,49 +91,24 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
     return possibleJumps;
 }
 
+// This function will be recursive. It will be called for the root node, and then, it
+// will call itself for each child
 
-std::pair<int, int> jump(std::pair<int, int> position, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
+void dijkstra(Node* currentNode, std::vector<std::vector <int>> grid){
 
-    int equalValues = -1;
+    // Store in a vector all the surroundings
+    std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode, NROWS, NCOLS);
 
-    // Get the highest value of the possible surroundings --> will be the jump
+    // Scan the surroundings and get the ones eligible to jump into
+    std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode, surroundings, grid);
 
-    /*
-
-    int highestValue = 0;
-
-    for(auto e : surroundingElements){
-        if(e > highestValue)
-            highestValue = e;
-        else if(e == highestValue)  // If there exist 2 (or more) elements with the same value we'll take a random one
-            equalValues = e;
+    // Create the children nodes
+    for(auto jumpPosition : possibleJumps){
+        new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], currentNode->getMinDistance() + 1);
     }
 
-    // Check if there are repeated values
+    // For every node, the function must check its children.
+    std::vector<Node*> children = currentNode->getChildren();
 
-    if(equalValues != -1){
-
-        std::vector<std::pair<int, int>> repeatedValuesJumps;
-
-        for(int i = 0; i < possibleJumps.size(); i++){ // Get indexes of the equal values
-
-            if(grid[possibleJumps[i].first][possibleJumps[i].second] == equalValues)    // Get the jumps whose values are repeated
-                repeatedValuesJumps.push_back(possibleJumps[i]);
-        }
-
-        // Take a random one
-        srand((unsigned) time(NULL));   // Generate a random seed
-        int index = rand() % repeatedValuesJumps.size();
-        return possibleJumps[index];
-    }
-
-    // Return the position associated to the highest value
-
-    for(auto e : possibleJumps){
-        if(grid[e.first][e.second] == highestValue)
-            return e;
-    }
-    */
-
-    return position; // In case there are no possible jumps, stay
+    // Update the distance 
 }
