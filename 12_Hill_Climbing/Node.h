@@ -12,7 +12,7 @@ private:
     int value;  // Ascii value of the letter assigned to the node
     std::pair<int, int> position;
     int minDistance;
-    bool checked;   
+    bool explored;   
 
     Node* parent;
     std::vector <Node*> children;
@@ -26,14 +26,16 @@ public:
 
     // Member methods
     void add_child(Node* child);
-    void setChecked();
-    int getValue();
-    int getMinDistance();
-    void setMinDistance(int minDistance);
-    bool getChecked();
     Node* getParent();
     std::vector <Node*> getChildren();
+
+    // Getters and Setters
+    void setExplored();
+    bool getExplored();
+    int getValue();
     std::pair<int, int> getPosition();
+    void setMinDistance(int minDistance);
+    int getMinDistance();
 };
 
 #endif

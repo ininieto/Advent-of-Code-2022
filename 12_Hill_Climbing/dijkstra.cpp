@@ -91,6 +91,10 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
 
 void dijkstra(Node* currentNode, std::vector<std::vector <int>> grid){
 
+    // Debug
+    std::cout << "Soy el nodo de " << currentNode->getPosition().first << ", " << currentNode->getPosition().second << ". Mi valor es " << currentNode->getValue() << '\n';
+
+
     // Store in a vector all the surroundings
     std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode, NROWS, NCOLS);
 
@@ -102,12 +106,16 @@ void dijkstra(Node* currentNode, std::vector<std::vector <int>> grid){
         new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INFINITY);
     }
 
+    
+
     // Store all the child nodes in a vector
     std::vector<Node*> children = currentNode->getChildren();
 
     // Calculate the distance for every child
     for(auto &child : children){
-        child->setMinDistance(currentNode->getMinDistance() + 1);   
+        child->setMinDistance(currentNode->getMinDistance() + 1);  // minimo entre el nuevo calculado y el que ya tenía
+        child->setChecked();
+        dijkstra(child, grid); // ONLY DEBUG
     }
 
     // Sort the children by its distance
@@ -121,4 +129,6 @@ void dijkstra(Node* currentNode, std::vector<std::vector <int>> grid){
 
     // Also, when will I stop? How can I assure that I have reached the End Node*? 
     // I will probably need to define a function checkEndNode() or something similar
+
+    // When should I set a Node* as checked?
 }

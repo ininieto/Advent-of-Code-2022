@@ -25,17 +25,13 @@ Node::Node(Node* parent, std::pair<int, int> position, int value, int minDistanc
     this->position = position;
     this->value = value;
     this->minDistance = minDistance;
-    checked = false;
+    explored = false;
 }
 
 // Member methods
 
 void Node::add_child(Node* child){
     children.push_back(child);
-}
-
-void Node::setChecked(){
-    this->checked = true;
 }
 
 Node* Node::getParent(){
@@ -46,23 +42,31 @@ std::vector <Node*> Node::getChildren(){
     return this->children;
 }
 
-int Node::getValue(){
-    return this->value;
+// Getters and Setters
+
+void Node::setExplored(){
+    this->explored = true;
 }
 
-void Node::setMinDistance(int minDistance){
-    this->minDistance = minDistance;
+bool Node::getExplored(){
+    return this->explored;
+}
+
+int Node::getValue(){
+    return this->value;
 }
 
 std::pair<int, int> Node::getPosition(){
     return this->position;
 }
 
+void Node::setMinDistance(int minDistance){
+    this->minDistance = minDistance;
+}
+
 int Node::getMinDistance(){
     return this->minDistance;
 }
 
-bool Node::getChecked(){
-    return this->checked;
-}
+
 
