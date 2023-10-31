@@ -4,7 +4,6 @@
 #include <vector>
 
 
-
 // This function will ONLY return the adjacent elements. Won't perform any further calculation
 
 std::vector<std::pair<int, int>> getSurroundings(Node* currentNode, int nrows, int ncols){
@@ -100,11 +99,26 @@ void dijkstra(Node* currentNode, std::vector<std::vector <int>> grid){
 
     // Create the children nodes
     for(auto jumpPosition : possibleJumps){
-        new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], currentNode->getMinDistance() + 1);
+        new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INFINITY);
     }
 
-    // For every node, the function must check its children.
+    // Store all the child nodes in a vector
     std::vector<Node*> children = currentNode->getChildren();
 
-    // Update the distance 
+    // Calculate the distance for every child
+    for(auto &child : children){
+        child->setMinDistance(currentNode->getMinDistance() + 1);   
+    }
+
+    // Sort the children by its distance
+
+    // Call this function for each of those childs
+
+    // My concern is: will it be possible that for the same position various nodes
+    // will be created? If I reach an element, I create a Node*. But if I reach the
+    // same position using a different path, will I be able to identify it and use the
+    // same Node* ? 
+
+    // Also, when will I stop? How can I assure that I have reached the End Node*? 
+    // I will probably need to define a function checkEndNode() or something similar
 }

@@ -29,6 +29,7 @@ public:
     void setChecked();
     int getValue();
     int getMinDistance();
+    void setMinDistance(int minDistance);
     bool getChecked();
     Node* getParent();
     std::vector <Node*> getChildren();

@@ -50,6 +50,10 @@ int Node::getValue(){
     return this->value;
 }
 
+void Node::setMinDistance(int minDistance){
+    this->minDistance = minDistance;
+}
+
 std::pair<int, int> Node::getPosition(){
     return this->position;
 }
