@@ -86,17 +86,40 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
     return possibleJumps;
 }
 
+// I need a function to check if a node already exists given the position
+bool checkIfNodeExists(Node* startNode, Node* currentNode, std::pair<int, int> targetPosition){
+
+
+
+
+    // Take the children
+    std::vector<Node*> children;
+
+    // For each child, call this function --> I am a recursive-fan :)
+
+    return false;
+}
+
 // This function will be recursive. It will be called for the root node, and then, it
 // will call itself for each child
 
-int dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<Node*> allNodes, std::vector<std::vector <int>> grid, std::pair<int, int> endPosition){
+int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<Node*> allNodes, std::vector<std::vector <int>> grid, std::pair<int, int> endPosition){
 
     // Debug
-    std::cout << "Soy el nodo de " << currentNode->getPosition().first << ", " << currentNode->getPosition().second << ". Mi valor es " << currentNode->getValue() << " y mi distancia es " << currentNode->getMinDistance() << '\n';
+    std::cout << "The current position is " << currentNode->getPosition().first << ", " << currentNode->getPosition().second << ". The min distance is " << currentNode->getMinDistance() << '\n';
 
     // Check if we have already finished
-    if(currentNode->getPosition() == endPosition)
+    if(currentNode->getPosition() == endPosition){
         return currentNode->getMinDistance();
+    }
+
+    // KNOWN BUG: Después de escanear la posición (9, 49) pasa a buscar la (-1, -1) y peta
+    // Vale es porque ha escaneado 1000 nodos y el vector allNodes está muriendo
+    // Necesito comprobar si un nodo ya existe de otra manera --> Seguramente algún BFS o DFS
+
+    if(currentNode->getPosition() == std::make_pair(9, 49))
+        std::cout << "debug";
+        
 
 
     // Set the current node as explored
@@ -118,10 +141,13 @@ int dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<
 
 
     // TODO: Check if a Node for this position already exists before creating it
+    
 
 
     // Create the children nodes
     for(auto jumpPosition : possibleJumps){
+
+        bool nodeExists = checkIfNodeExists(startNode, currentNode, jumpPosition); // Test the function
 
         bool existingNode = false;
 
@@ -159,7 +185,7 @@ int dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<
     }   
 
     // Repeat the algorithm with the smallestDistanceNode
-    dijkstra(smallestDistanceNode, unexploredNodes, allNodes, grid, endPosition);
+    dijkstra(startNode, smallestDistanceNode, unexploredNodes, allNodes, grid, endPosition);
 
     // Set this Node* to explored and call the dijkstra function again
 
@@ -171,4 +197,6 @@ int dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<
 
     // Also, when will I stop? How can I assure that I have reached the End Node*? 
     // I will probably need to define a function checkEndNode() or something similar
+
+    return currentNode->getMinDistance();
 }
