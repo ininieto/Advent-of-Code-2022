@@ -1,6 +1,8 @@
-#pragma once
 #include <iostream>
 #include <vector>
+
+#include "Node.h"
+
 /*
     This class will be adapted for the problem of Advent of Code 12/12/2022
     The member variables could be altered
@@ -13,65 +15,50 @@
         - Create children like: Node* child1 = new Node(root, "child1");
 */
 
-class Node{
 
-private:
-    int value;  // Ascii value of the letter assigned to the node
-    std::pair<int, int> position;
-    int minDistance;
-    bool checked;   
+// Constructor
+Node::Node(Node* parent, std::pair<int, int> position, int value, int minDistance){
 
-    Node* parent;
-    std::vector <Node*> children;
+    this->parent = parent;
+    if(parent)
+        parent->add_child(this);
+    this->position = position;
+    this->value = value;
+    this->minDistance = minDistance;
+    checked = false;
+}
 
-public:
-    // Constructor
-    Node(Node* parent, std::pair<int, int> position, int value, int minDistance){
+// Member methods
 
-        this->parent = parent;
-        if(parent)
-            parent->add_child(this);
-        this->position = position;
-        this->value = value;
-        this->minDistance = minDistance;
-        checked = false;
-    }
+void Node::add_child(Node* child){
+    children.push_back(child);
+}
 
-    // Destructor
-    virtual ~Node(){};
+void Node::setChecked(){
+    this->checked = true;
+}
 
-    // Member methods
+Node* Node::getParent(){
+    return this->parent;
+}
 
-    void add_child(Node* child){
-        children.push_back(child);
-    }
+std::vector <Node*> Node::getChildren(){
+    return this->children;
+}
 
-    void setChecked(){
-        this->checked = true;
-    }
+int Node::getValue(){
+    return this->value;
+}
 
-    Node* getParent(){
-        return this->parent;
-    }
+std::pair<int, int> Node::getPosition(){
+    return this->position;
+}
 
-    std::vector <Node*> getChildren(){
-        return this->children;
-    }
+int Node::getMinDistance(){
+    return this->minDistance;
+}
 
-    int getValue(){
-        return this->value;
-    }
+bool Node::getChecked(){
+    return this->checked;
+}
 
-    std::pair<int, int> getPosition(){
-        return this->position;
-    }
-
-    int getMinDistance(){
-        return this->minDistance;
-    }
-
-    bool getChecked(){
-        return this->checked;
-    }
-
-};
