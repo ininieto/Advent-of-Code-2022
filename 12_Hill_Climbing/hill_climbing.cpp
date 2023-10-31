@@ -28,13 +28,9 @@
 
 int main(){
 
-    const int nrows = 5, ncols = 8; 
-    //const int nrows = 41, ncols = 66;
-    int jumps = 0;
-
     std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
     std::string inputData = readInputText("input.txt");
-    std::vector<std::vector <int>> grid(nrows, std::vector<int>(ncols));
+    std::vector<std::vector <int>> grid(NROWS, std::vector<int>(NCOLS));
     std::pair startPosition(-1, -1), endPosition(-1, -1);
 
     inputData = example;
@@ -42,8 +38,8 @@ int main(){
     // Fill in the grid vector with the ascii values of the characters
     int stringCount = 0;
 
-    for(int i = 0; i < nrows; i++){
-        for(int j = 0; j < ncols; j++){
+    for(int i = 0; i < NROWS; i++){
+        for(int j = 0; j < NCOLS; j++){
 
             if(inputData[stringCount] == '\n')
                 stringCount ++;
@@ -66,35 +62,36 @@ int main(){
         }
     }
 
+    int jumps = 0;
+
     // Crete the root node
     Node* startNode = new Node(NULL, startPosition, int('a') - 1, 0);
     Node *currentNode = startNode;
 
-    // Change of strategy: will change the while loop for a recursive function
+    // Change of strategy: will change all the shifted code for a recursive function. 
 
-    // Store in a vector all the surroundings
-    std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode, nrows, ncols);
+        // Store in a vector all the surroundings
+        std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode, NROWS, NCOLS);
 
-    // Scan the surroundings and get the ones eligible to jump into
-    std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode, surroundings, grid);
+        // Scan the surroundings and get the ones eligible to jump into
+        std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode, surroundings, grid);
 
-    // Create the children nodes
-    for(auto jumpPosition : possibleJumps){
-        new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], currentNode->getMinDistance() + 1);
-    }
+        // Create the children nodes
+        for(auto jumpPosition : possibleJumps){
+            new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], currentNode->getMinDistance() + 1);
+        }
+        /*
+        // Check the surroundings and decide a jump
+        std::pair<int, int> newPosition = jump(currentNode->getPosition(), surroundings, grid);
+        */
 
-    /*
-    // Check the surroundings and decide a jump
-    std::pair<int, int> newPosition = jump(currentNode->getPosition(), surroundings, grid);
-    */
+        currentNode->setChecked();   // The node is already checked. No need to check it again
 
-    currentNode->setChecked();   // The node is already checked. No need to check it again
+        // Iterate all over the children 
 
-    // Iterate all over the children 
-
-    jumps++;
-    // position = newPosition;
-    // I already must have created the children nodes. I want something like currentNode = child;
+        jumps++;
+        // position = newPosition;
+        // I already must have created the children nodes. I want something like currentNode = child;
 
     
     std::cout << jumps << " jumps";
