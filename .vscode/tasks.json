@@ -7,7 +7,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${workspaceFolder}/*.cpp",
+                "${workspaceFolder}/12_Hill_Climbing/*.cpp", // Only works for this folder. Might change when problem finished
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
