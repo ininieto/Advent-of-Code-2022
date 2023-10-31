@@ -79,7 +79,7 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
 
     // Check which of the surrounding elements are eligible to jump
     for(auto e : surroundings){
-        if((grid[e.first][e.second] == currentElement || grid[e.first][e.second] == currentElement + 1) && !currentNode->getChecked())  // We can only jump to the same value or 1 higher
+        if(grid[e.first][e.second] == currentElement || grid[e.first][e.second] == currentElement + 1)  // We can only jump to the same value or 1 higher
             possibleJumps.push_back(e);
     }
 
@@ -89,11 +89,22 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
 // This function will be recursive. It will be called for the root node, and then, it
 // will call itself for each child
 
-void dijkstra(Node* currentNode, std::vector<std::vector <int>> grid){
+void dijkstra(Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<std::vector <int>> grid){
 
     // Debug
     std::cout << "Soy el nodo de " << currentNode->getPosition().first << ", " << currentNode->getPosition().second << ". Mi valor es " << currentNode->getValue() << '\n';
 
+    // Set the current node as explored
+    currentNode->setExplored();
+
+    // Erase element from vector unexploredNodes
+    for(int i = 0; i < unexploredNodes.size(); i++){
+        if(unexploredNodes[i] == currentNode){
+            unexploredNodes.erase(unexploredNodes.begin() + i);
+            break;
+        }
+    }
+    
 
     // Store in a vector all the surroundings
     std::vector<std::pair<int, int>> surroundings = getSurroundings(currentNode, NROWS, NCOLS);
@@ -103,24 +114,31 @@ void dijkstra(Node* currentNode, std::vector<std::vector <int>> grid){
 
     // Create the children nodes
     for(auto jumpPosition : possibleJumps){
-        new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INFINITY);
+        unexploredNodes.push_back(new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX));    // It won't always be a new Node --> must check if it already exists
     }
-
-    
 
     // Store all the child nodes in a vector
     std::vector<Node*> children = currentNode->getChildren();
 
     // Calculate the distance for every child
     for(auto &child : children){
-        child->setMinDistance(currentNode->getMinDistance() + 1);  // minimo entre el nuevo calculado y el que ya tenía
-        child->setChecked();
-        dijkstra(child, grid); // ONLY DEBUG
+        child->setMinDistance(std::min(currentNode->getMinDistance() + 1, child->getMinDistance()));  
     }
 
-    // Sort the children by its distance
+    // Find the unexplored Node with the smallest distance
+    Node* smallestDistanceNode = new Node(NULL, std::make_pair(-1, -1), -1, INT_MAX);
+    smallestDistanceNode->setMinDistance(INT_MAX);
 
-    // Call this function for each of those childs
+    for(auto unexploredNode : unexploredNodes){
+        if(unexploredNode->getMinDistance() < smallestDistanceNode->getMinDistance())
+            smallestDistanceNode = unexploredNode;
+    }   
+
+    // Repeat the algorithm with the smallestDistanceNode
+    dijkstra(smallestDistanceNode, unexploredNodes, grid);
+
+    // Set this Node* to explored and call the dijkstra function again
+
 
     // My concern is: will it be possible that for the same position various nodes
     // will be created? If I reach an element, I create a Node*. But if I reach the

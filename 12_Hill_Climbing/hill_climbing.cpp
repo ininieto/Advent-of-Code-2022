@@ -69,9 +69,10 @@ int main(){
     Node* startNode = new Node(NULL, startPosition, int('a') - 1, 0);
     Node *currentNode = startNode;
 
-    // Change of strategy: will change all the shifted code for a recursive function. 
+    std::vector<Node*> unexploredNodes; // I need to keep track of the unexplored Nodes
 
-    dijkstra(currentNode, grid);
+    // Call the dijkstra function on the Start Node. The function is recursive: will call itself throughout the graph
+    dijkstra(currentNode, unexploredNodes, grid);
     
     std::cout << jumps << " jumps";
 
