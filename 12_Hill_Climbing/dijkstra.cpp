@@ -79,9 +79,9 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
     int currentElement = grid[currentPosition.first][currentPosition.second];
 
     // Check which of the surrounding elements are eligible to jump
-    for(auto e : surroundings){
-        if(grid[e.first][e.second] == currentElement || grid[e.first][e.second] == currentElement + 1)  // We can only jump to the same value or 1 higher
-            possibleJumps.push_back(e);
+    for(auto s : surroundings){
+        if(grid[s.first][s.second] == currentElement || grid[s.first][s.second] == currentElement + 1)  // We can only jump to the same value or 1 higher
+            possibleJumps.push_back(s);
     }
 
     return possibleJumps;
@@ -90,7 +90,7 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
 // Recursive function that searchs all over the graph to check if there already exists a node
 bool checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
 
-    if(!currentNode)
+    if(currentNode == NULL)
         return false;
 
     // Check if the node has the target position
@@ -100,10 +100,12 @@ bool checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
     std::vector<Node*> children = currentNode->getChildren();
     
     for(auto child: children){
-        return checkIfNodeExists(child, targetPosition);
+
+        if(checkIfNodeExists(child, targetPosition))
+            return true;
     }
 
-    // return false;
+     return false;
 }
 
 // This function will be recursive. It will be called for the root node, and then, it
@@ -137,14 +139,8 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     std::vector<std::pair<int, int>> possibleJumps = getPossibleJumps(currentNode, surroundings, grid);
 
 
-    // TODO: Check if a Node for this position already exists before creating it
-    
-
-
-    // Create the children nodes
+    // If necessary, create the children nodes
     for(auto jumpPosition : possibleJumps){
-
-        // Known bug: Function not working
 
         bool nodeExists = checkIfNodeExists(startNode, jumpPosition); // The function returns true when there is already a Node* with that position --> The node already exists
 
@@ -153,10 +149,6 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
             Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
             unexploredNodes.push_back(newNode); 
         }
-        else{
-            std::cout << "debug";
-        }
-        // Should I do something if it exists??   
     }
 
     // Store all the child nodes in a vector
@@ -176,18 +168,6 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     }   
 
     // Repeat the algorithm with the smallestDistanceNode
-    dijkstra(startNode, smallestDistanceNode, unexploredNodes, grid, endPosition);
+    return dijkstra(startNode, smallestDistanceNode, unexploredNodes, grid, endPosition);
 
-    // Set this Node* to explored and call the dijkstra function again
-
-
-    // My concern is: will it be possible that for the same position various nodes
-    // will be created? If I reach an element, I create a Node*. But if I reach the
-    // same position using a different path, will I be able to identify it and use the
-    // same Node* ? 
-
-    // Also, when will I stop? How can I assure that I have reached the End Node*? 
-    // I will probably need to define a function checkEndNode() or something similar
-
-    return currentNode->getMinDistance();
 }
