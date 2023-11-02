@@ -100,10 +100,10 @@ bool checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
     std::vector<Node*> children = currentNode->getChildren();
     
     for(auto child: children){
-        checkIfNodeExists(child, targetPosition);
+        return checkIfNodeExists(child, targetPosition);
     }
 
-    return false;
+    // return false;
 }
 
 // This function will be recursive. It will be called for the root node, and then, it
@@ -112,7 +112,7 @@ bool checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
 int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<std::vector <int>> grid, std::pair<int, int> endPosition){
 
     // Debug
-    std::cout << "The current position is " << currentNode->getPosition().first << ", " << currentNode->getPosition().second << ". The min distance is " << currentNode->getMinDistance() << '\n';
+    std::cout << "The current position is (" << currentNode->getPosition().first << ", " << currentNode->getPosition().second << "). The min distance is " << currentNode->getMinDistance() << " and the value is " << currentNode->getValue() << '\n';
 
     // Check if we have already finished
     if(currentNode->getPosition() == endPosition){
@@ -144,12 +144,17 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // Create the children nodes
     for(auto jumpPosition : possibleJumps){
 
+        // Known bug: Function not working
+
         bool nodeExists = checkIfNodeExists(startNode, jumpPosition); // The function returns true when there is already a Node* with that position --> The node already exists
 
         if(!nodeExists){
 
             Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
             unexploredNodes.push_back(newNode); 
+        }
+        else{
+            std::cout << "debug";
         }
         // Should I do something if it exists??   
     }
@@ -164,7 +169,6 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
 
     // Find the unexplored Node with the smallest distance
     Node* smallestDistanceNode = new Node(NULL, std::make_pair(-1, -1), -1, INT_MAX);
-    smallestDistanceNode->setMinDistance(INT_MAX);
 
     for(auto unexploredNode : unexploredNodes){
         if(unexploredNode->getMinDistance() < smallestDistanceNode->getMinDistance())
