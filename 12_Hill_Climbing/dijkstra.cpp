@@ -2,7 +2,8 @@
 
 #include <iostream>
 #include <vector>
-
+#include <list>
+#include <unordered_map>
 
 // This function will ONLY return the adjacent elements. Won't perform any further calculation
 
@@ -86,21 +87,20 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
     return possibleJumps;
 }
 
-// I need a function to check if a node already exists given the position
-bool checkIfNodeExists(Node* startNode, Node* currentNode, std::pair<int, int> targetPosition){
+// Recursive function that searchs all over the graph to check if there already exists a node
+bool checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
 
+    if(!currentNode)
+        return false;
 
-    // Take the children of the start node
-    std::vector<Node*> children = startNode->getChildren();
-
-    std::vector<bool> visited;
-
-    // Iterate all over the children
-
-    for (auto child : children){
-
-        if (child->getPosition() == targetPosition)
-            return true;
+    // Check if the node has the target position
+    if(currentNode->getPosition() == targetPosition)
+        return true;
+    
+    std::vector<Node*> children = currentNode->getChildren();
+    
+    for(auto child: children){
+        checkIfNodeExists(child, targetPosition);
     }
 
     return false;
@@ -117,14 +117,6 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // Check if we have already finished
     if(currentNode->getPosition() == endPosition){
         return currentNode->getMinDistance();
-    }
-
-    // KNOWN BUG: Después de escanear la posición (9, 49) pasa a buscar la (-1, -1) y peta
-    // Vale es porque ha escaneado 1000 nodos y el vector allNodes está muriendo
-    // Necesito comprobar si un nodo ya existe de otra manera --> Seguramente algún BFS o DFS
-
-    if(currentNode->getPosition() == std::make_pair(9, 49)){
-        std::cout << "debug";
     }
 
     // Set the current node as explored
@@ -152,23 +144,11 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // Create the children nodes
     for(auto jumpPosition : possibleJumps){
 
-        bool nodeExists = checkIfNodeExists(startNode, currentNode, jumpPosition); // Test the function
+        bool nodeExists = checkIfNodeExists(startNode, jumpPosition); // The function returns true when there is already a Node* with that position --> The node already exists
 
-        bool existingNode = false;
-
-        // Check if a Node already exists for this position
-        /*
-        for(auto node : allNodes){
-            if(node->getPosition() == jumpPosition){    // I must check ALL the nodes before creating a new one 
-                existingNode = true;
-                break;
-            }
-        }
-        */
-        if(!existingNode){
+        if(!nodeExists){
 
             Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
-            //allNodes.push_back(newNode);
             unexploredNodes.push_back(newNode); 
         }
         // Should I do something if it exists??   
