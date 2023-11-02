@@ -95,8 +95,6 @@ bool checkIfNodeExists(Node* startNode, Node* currentNode, std::pair<int, int> t
 
     std::vector<bool> visited;
 
-    visited.resize()
-
     // Iterate all over the children
 
     for (auto child : children){
