@@ -75,8 +75,7 @@ std::vector<std::pair<int, int>> getSurroundings(Node* currentNode, int nrows, i
 std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
 
     std::pair<int, int> currentPosition = currentNode->getPosition();
-    std::vector<std::pair<int, int>> possibleJumps;
-    int currentElement = grid[currentPosition.first][currentPosition.second];
+    std::vector<std::pair<int, int>> possibleJumps;    int currentElement = grid[currentPosition.first][currentPosition.second];
 
     // Check which of the surrounding elements are eligible to jump
     for(auto s : surroundings){
@@ -115,6 +114,14 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
 
     // Debug
     std::cout << "The current position is (" << currentNode->getPosition().first << ", " << currentNode->getPosition().second << "). The min distance is " << currentNode->getMinDistance() << " and the value is " << currentNode->getValue() << '\n';
+
+    // Debug
+    if(currentNode->getPosition() == std::make_pair(9, 49)){    // Está petando en (9, 49). Después intenta con (-1, -1)
+
+        std::cout << "debug" << '\n';
+
+    }
+
 
     // Check if we have already finished
     if(currentNode->getPosition() == endPosition){
