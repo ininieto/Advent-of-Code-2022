@@ -25,7 +25,7 @@ Node::Node(Node* parent, std::pair<int, int> position, int value, int minDistanc
     this->position = position;
     this->value = value;
     this->minDistance = minDistance;
-    explored = false;
+    // explored = false;
 }
 
 // Member methods
@@ -44,6 +44,8 @@ std::vector <Node*> Node::getChildren(){
 
 // Getters and Setters
 
+/*
+
 void Node::setExplored(){
     this->explored = true;
 }
@@ -51,6 +53,8 @@ void Node::setExplored(){
 bool Node::getExplored(){
     return this->explored;
 }
+
+*/
 
 int Node::getValue(){
     return this->value;

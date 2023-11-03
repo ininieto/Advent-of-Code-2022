@@ -75,11 +75,12 @@ std::vector<std::pair<int, int>> getSurroundings(Node* currentNode, int nrows, i
 std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector<std::pair<int, int>> surroundings, std::vector<std::vector <int>> grid){
 
     std::pair<int, int> currentPosition = currentNode->getPosition();
-    std::vector<std::pair<int, int>> possibleJumps;    int currentElement = grid[currentPosition.first][currentPosition.second];
+    std::vector<std::pair<int, int>> possibleJumps;    
+    int currentElement = grid[currentPosition.first][currentPosition.second];
 
     // Check which of the surrounding elements are eligible to jump
     for(auto s : surroundings){
-        if(grid[s.first][s.second] == currentElement || grid[s.first][s.second] == currentElement + 1)  // We can only jump to the same value or 1 higher
+        if(grid[s.first][s.second] <= currentElement || grid[s.first][s.second] == currentElement + 1)  // We can only jump to lower value, same value or 1 higher
             possibleJumps.push_back(s);
     }
 
@@ -97,14 +98,13 @@ bool checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
         return true;
     
     std::vector<Node*> children = currentNode->getChildren();
-    
-    for(auto child: children){
 
-        if(checkIfNodeExists(child, targetPosition))
+    for (auto child : children){
+        if (checkIfNodeExists(child, targetPosition))
             return true;
     }
 
-     return false;
+    return false;
 }
 
 // This function will be recursive. It will be called for the root node, and then, it
@@ -115,12 +115,10 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // Debug
     std::cout << "The current position is (" << currentNode->getPosition().first << ", " << currentNode->getPosition().second << "). The min distance is " << currentNode->getMinDistance() << " and the value is " << currentNode->getValue() << '\n';
 
-    // Debug
-    if(currentNode->getPosition() == std::make_pair(9, 49)){    // Está petando en (9, 49). Después intenta con (-1, -1)
+    //Debug
+    std::cout << "Unexplored Nodes: " << unexploredNodes.size() << '\n';
 
-        std::cout << "debug" << '\n';
-
-    }
+    // Quiero que cuando salte dos letras (a -> c) se borren todos los nodos de (a -> b) que no sean el correcto
 
 
     // Check if we have already finished
@@ -129,7 +127,7 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     }
 
     // Set the current node as explored
-    currentNode->setExplored();
+    // currentNode->setExplored();
 
     // Erase element from vector unexploredNodes
     for(int i = 0; i < unexploredNodes.size(); i++){
@@ -173,6 +171,11 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
         if(unexploredNode->getMinDistance() < smallestDistanceNode->getMinDistance())
             smallestDistanceNode = unexploredNode;
     }   
+
+    // I am creating a looooot of nodes. An intelligent approach would be that, whenever I jump to a node
+    // with a higher value (next letter), I delete all the unnecessary nodes
+
+
 
     // Repeat the algorithm with the smallestDistanceNode
     return dijkstra(startNode, smallestDistanceNode, unexploredNodes, grid, endPosition);
