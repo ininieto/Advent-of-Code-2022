@@ -12,7 +12,7 @@ private:
     int value;  // Ascii value of the letter assigned to the node
     std::pair<int, int> position;
     int minDistance;
-    // bool explored;   
+    //bool explored;   
 
     Node* parent;
     std::vector <Node*> children;

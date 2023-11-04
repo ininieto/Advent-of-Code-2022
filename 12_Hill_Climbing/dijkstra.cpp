@@ -118,16 +118,10 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     //Debug
     std::cout << "Unexplored Nodes: " << unexploredNodes.size() << '\n';
 
-    // Quiero que cuando salte dos letras (a -> c) se borren todos los nodos de (a -> b) que no sean el correcto
-
 
     // Check if we have already finished
-    if(currentNode->getPosition() == endPosition){
+    if(currentNode->getValue() == 123)
         return currentNode->getMinDistance();
-    }
-
-    // Set the current node as explored
-    // currentNode->setExplored();
 
     // Erase element from vector unexploredNodes
     for(int i = 0; i < unexploredNodes.size(); i++){
@@ -165,17 +159,12 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     }
 
     // Find the unexplored Node with the smallest distance
-    Node* smallestDistanceNode = new Node(NULL, std::make_pair(-1, -1), -1, INT_MAX);
+    Node* smallestDistanceNode = unexploredNodes[0]; // Take a random one
 
     for(auto unexploredNode : unexploredNodes){
         if(unexploredNode->getMinDistance() < smallestDistanceNode->getMinDistance())
             smallestDistanceNode = unexploredNode;
     }   
-
-    // I am creating a looooot of nodes. An intelligent approach would be that, whenever I jump to a node
-    // with a higher value (next letter), I delete all the unnecessary nodes
-
-
 
     // Repeat the algorithm with the smallestDistanceNode
     return dijkstra(startNode, smallestDistanceNode, unexploredNodes, grid, endPosition);

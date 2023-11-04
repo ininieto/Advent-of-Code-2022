@@ -7,6 +7,14 @@
 
 */
 
+/*
+    IMPORTANT UPDATE: I just discovered that it is possible to jump to a position with a lower value. I got a result
+    of 341 Jumps, but that is too high. I know the solution is between 240 and 341. Probably I will need to rewrite 
+    some functions to take this into account
+
+
+*/
+
 #include <iostream>
 #include <vector>
 
@@ -17,11 +25,11 @@
 int main(){
 
     std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
-    // std::string inputData = readInputText("input.txt");
+    std::string inputData = readInputText("input.txt");
     std::vector<std::vector <int>> grid(NROWS, std::vector<int>(NCOLS));
     std::pair startPosition(-1, -1), endPosition(-1, -1);
 
-    std::string inputData = example;
+    // std::string inputData = example;
 
     // Fill in the grid vector with the ascii values of the characters
     int stringCount = 0;
