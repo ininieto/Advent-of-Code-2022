@@ -2,8 +2,6 @@
 
 #include <iostream>
 #include <vector>
-#include <list>
-#include <unordered_map>
 
 // This function will ONLY return the adjacent elements. Won't perform any further calculation
 
@@ -115,9 +113,6 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // Debug
     std::cout << "The current position is (" << currentNode->getPosition().first << ", " << currentNode->getPosition().second << "). The min distance is " << currentNode->getMinDistance() << " and the value is " << currentNode->getValue() << '\n';
 
-    //Debug
-    std::cout << "Unexplored Nodes: " << unexploredNodes.size() << '\n';
-
 
     // Check if we have already finished
     if(currentNode->getValue() == 123)
@@ -147,6 +142,9 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
 
             Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
             unexploredNodes.push_back(newNode); 
+        }
+        else{
+            std::cout << "EL NODO YA EXISTE" << '\n'; // Creo que debería cambiar el parent por un std::vector y tener varios padres
         }
     }
 
