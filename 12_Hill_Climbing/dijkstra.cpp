@@ -85,24 +85,29 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
     return possibleJumps;
 }
 
+// KNOWN BUG: Function always returning the start node
+
 // Recursive function that searchs all over the graph to check if there already exists a node
-Node* checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
+void checkIfNodeExists(Node* currentNode, Node* &targetNode, std::pair<int, int> targetPosition){
 
     if(currentNode == NULL)
-        return NULL;
+        return;
 
     // Check if the node has the target position
-    if(currentNode->getPosition() == targetPosition)
-        return currentNode;
+    if(currentNode->getPosition() == targetPosition){
+        targetNode = currentNode;
+        return;
+    }
     
     std::vector<Node*> children = currentNode->getChildren();
 
     for (auto child : children){
-        if (checkIfNodeExists(child, targetPosition))
-            return currentNode;
+        checkIfNodeExists(child, targetNode, targetPosition);
+        //if (checkIfNodeExists(child, targetPosition))
+            // return currentNode;
     }
 
-    return NULL;
+    return;
 }
 
 // This function will be recursive. It will be called for the root node, and then, it
@@ -117,6 +122,7 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // Check if we have already finished
     if(currentNode->getValue() == 123)
         return currentNode->getMinDistance();
+
 
     // Erase element from vector unexploredNodes
     for(int i = 0; i < unexploredNodes.size(); i++){
@@ -136,7 +142,9 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // If necessary, create the children nodes
     for(auto jumpPosition : possibleJumps){
 
-        Node* existingNode = checkIfNodeExists(startNode, jumpPosition); // The function returns true when there is already a Node* with that position --> The node already exists
+        Node* existingNode = NULL;
+
+        checkIfNodeExists(startNode, existingNode, jumpPosition); // The function returns true when there is already a Node* with that position --> The node already exists
 
         if(!existingNode){
 
@@ -144,9 +152,9 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
             unexploredNodes.push_back(newNode); 
         }
         else{
-
+            // The node already exists -> Must add the new parent and re-calculathe its minimum distance
             existingNode->addParent(currentNode); 
-            // TODO: I must also update the min distance           
+            existingNode->setMinDistance(std::min(currentNode->getMinDistance() + 1, existingNode->getMinDistance()));         
         }
     }
 
