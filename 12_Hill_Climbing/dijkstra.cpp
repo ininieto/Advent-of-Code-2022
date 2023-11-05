@@ -86,23 +86,23 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
 }
 
 // Recursive function that searchs all over the graph to check if there already exists a node
-bool checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
+Node* checkIfNodeExists(Node* currentNode, std::pair<int, int> targetPosition){
 
     if(currentNode == NULL)
-        return false;
+        return NULL;
 
     // Check if the node has the target position
     if(currentNode->getPosition() == targetPosition)
-        return true;
+        return currentNode;
     
     std::vector<Node*> children = currentNode->getChildren();
 
     for (auto child : children){
         if (checkIfNodeExists(child, targetPosition))
-            return true;
+            return currentNode;
     }
 
-    return false;
+    return NULL;
 }
 
 // This function will be recursive. It will be called for the root node, and then, it
@@ -136,15 +136,17 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // If necessary, create the children nodes
     for(auto jumpPosition : possibleJumps){
 
-        bool nodeExists = checkIfNodeExists(startNode, jumpPosition); // The function returns true when there is already a Node* with that position --> The node already exists
+        Node* existingNode = checkIfNodeExists(startNode, jumpPosition); // The function returns true when there is already a Node* with that position --> The node already exists
 
-        if(!nodeExists){
+        if(!existingNode){
 
             Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
             unexploredNodes.push_back(newNode); 
         }
         else{
-            std::cout << "EL NODO YA EXISTE" << '\n'; // Creo que debería cambiar el parent por un std::vector y tener varios padres
+
+            existingNode->addParent(currentNode); 
+            // TODO: I must also update the min distance           
         }
     }
 

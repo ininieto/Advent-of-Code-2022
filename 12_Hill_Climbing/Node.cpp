@@ -19,7 +19,7 @@
 // Constructor
 Node::Node(Node* parent, std::pair<int, int> position, int value, int minDistance){
 
-    this->parent = parent;
+    this->parents.push_back(parent);
     if(parent)
         parent->add_child(this);
     this->position = position;
@@ -34,8 +34,12 @@ void Node::add_child(Node* child){
     children.push_back(child);
 }
 
-Node* Node::getParent(){
-    return this->parent;
+void Node::addParent(Node* parent){
+    parents.push_back(parent);
+}
+
+std::vector<Node*> Node::getParents(){
+    return this->parents;
 }
 
 std::vector <Node*> Node::getChildren(){
