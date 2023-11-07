@@ -101,17 +101,13 @@ void checkIfNodeExists(Node* currentNode, Node* &targetNode, std::pair<int, int>
     
     std::vector<Node*> children = currentNode->getChildren();
 
-    for (auto child : children){
+    for (auto child : children)
         checkIfNodeExists(child, targetNode, targetPosition);
-        //if (checkIfNodeExists(child, targetPosition))
-            // return currentNode;
-    }
 
     return;
 }
 
-// This function will be recursive. It will be called for the root node, and then, it
-// will call itself for each child
+// This function will be recursive. It will be called for the root node, and then, call itself for each child
 
 int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<std::vector <int>> grid, std::pair<int, int> endPosition){
 
@@ -142,9 +138,8 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     // If necessary, create the children nodes
     for(auto jumpPosition : possibleJumps){
 
-        Node* existingNode = NULL;
-
-        checkIfNodeExists(startNode, existingNode, jumpPosition); // The function returns true when there is already a Node* with that position --> The node already exists
+        Node* existingNode = NULL;  // If the node already exists, this variable will store it
+        checkIfNodeExists(startNode, existingNode, jumpPosition);
 
         if(!existingNode){
 

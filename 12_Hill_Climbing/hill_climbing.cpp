@@ -25,7 +25,8 @@
 int main(){
 
     std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
-    std::string inputData = readInputText("input.txt");
+    // std::string inputData = readInputText("input.txt");
+    std::string inputData = readInputText("second_input.txt");
     std::vector<std::vector <int>> grid(NROWS, std::vector<int>(NCOLS));
     std::pair startPosition(-1, -1), endPosition(-1, -1);
 
