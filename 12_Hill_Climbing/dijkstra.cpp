@@ -78,7 +78,7 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
 
     // Check which of the surrounding elements are eligible to jump
     for(auto s : surroundings){
-        if(grid[s.first][s.second] <= currentElement || grid[s.first][s.second] == currentElement + 1)  // We can only jump to lower value, same value or 1 higher
+        if(grid[s.first][s.second] <= currentElement + 1)  // We can only jump to lower value, same value or 1 higher
             possibleJumps.push_back(s);
     }
 
@@ -146,7 +146,10 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
         }
         else{
             // The node already exists -> Must re-calculathe its minimum distance
-            existingNode->setMinDistance(std::min(currentNode->getMinDistance() + 1, existingNode->getMinDistance()));         
+            existingNode->setMinDistance(std::min(currentNode->getMinDistance() + 1, existingNode->getMinDistance()));    
+
+            if(currentNode->getMinDistance() + 1 < existingNode->getMinDistance()) // Never happens, but just in case
+                existingNode->setParent(currentNode);   
         }
     }
 
