@@ -137,9 +137,9 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     for(auto jumpPosition : possibleJumps){
 
         Node* existingNode = NULL;  // If the node already exists, this variable will store it
-        checkIfNodeExists(startNode, existingNode, jumpPosition);
+        checkIfNodeExists(startNode, existingNode, jumpPosition);   // Must search from startNode in order to check the whole graph
 
-        if(!existingNode){
+        if(!existingNode){ // If hasn't been explored
 
             Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
             unexploredNodes.push_back(newNode); 

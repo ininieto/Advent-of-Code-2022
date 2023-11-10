@@ -11,8 +11,8 @@
     being the root node the S node. 
 
     How to use:
-        - Create a root node like: Node* root = new Node(NULL, "root");
-        - Create children like: Node* child1 = new Node(root, "child1");
+        - Create a root node like: Node* root = new Node(NULL, startPosition, value, INT_MAX;
+        - Create children like: Node* child1 = new Node(root, position, value, root->getMinDistance() + 1);
 */
 
 
@@ -25,7 +25,6 @@ Node::Node(Node* parent, std::pair<int, int> position, int value, int minDistanc
     this->position = position;
     this->value = value;
     this->minDistance = minDistance;
-    // explored = false;
 }
 
 // Member methods
@@ -47,18 +46,6 @@ std::vector <Node*> Node::getChildren(){
 }
 
 // Getters and Setters
-
-/*
-
-void Node::setExplored(){
-    this->explored = true;
-}
-
-bool Node::getExplored(){
-    return this->explored;
-}
-
-*/
 
 int Node::getValue(){
     return this->value;
