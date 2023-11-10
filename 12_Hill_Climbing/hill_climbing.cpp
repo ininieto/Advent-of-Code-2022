@@ -25,8 +25,7 @@
 int main(){
 
     std::string example = "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n";
-    // std::string inputData = readInputText("input.txt");
-    std::string inputData = readInputText("second_input.txt");
+    std::string inputData = readInputText("input.txt");
     std::vector<std::vector <int>> grid(NROWS, std::vector<int>(NCOLS));
     std::pair startPosition(-1, -1), endPosition(-1, -1);
 
@@ -65,8 +64,10 @@ int main(){
 
     std::vector<Node*> unexploredNodes; // I need to keep track of the unexplored Nodes
 
+    int numNodes = 0;
+
     // Call the dijkstra function on the Start Node. The function is recursive: will call itself throughout the graph
-    int minJumps = dijkstra(startNode, currentNode, unexploredNodes, grid, endPosition);
+    int minJumps = dijkstra(startNode, currentNode, unexploredNodes, grid, endPosition, numNodes);
     
     std::cout << minJumps << " jumps";
 

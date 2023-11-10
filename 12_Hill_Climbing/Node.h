@@ -14,7 +14,7 @@ private:
     int minDistance;
     //bool explored;   
 
-    std::vector<Node*> parents; // A node can support multiple parents
+    Node* parent; // A node can support multiple parents
     std::vector <Node*> children;
 
 public:
@@ -26,8 +26,8 @@ public:
 
     // Member methods
     void add_child(Node* child);
-    void addParent(Node* parent);
-    std::vector <Node*> getParents();
+    void setParent(Node* parent);
+    Node* getParent();
     std::vector <Node*> getChildren();
 
     // Getters and Setters

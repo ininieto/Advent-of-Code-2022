@@ -109,7 +109,7 @@ void checkIfNodeExists(Node* currentNode, Node* &targetNode, std::pair<int, int>
 
 // This function will be recursive. It will be called for the root node, and then, call itself for each child
 
-int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<std::vector <int>> grid, std::pair<int, int> endPosition){
+int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNodes, std::vector<std::vector <int>> grid, std::pair<int, int> endPosition, int &numNodes){
 
     // Debug
     std::cout << "The current position is (" << currentNode->getPosition().first << ", " << currentNode->getPosition().second << "). The min distance is " << currentNode->getMinDistance() << " and the value is " << currentNode->getValue() << '\n';
@@ -144,11 +144,13 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
         if(!existingNode){
 
             Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
+            // numNodes ++;
+            // std::cout << "Num nodes " << numNodes << '\n';
             unexploredNodes.push_back(newNode); 
         }
         else{
             // The node already exists -> Must add the new parent and re-calculathe its minimum distance
-            existingNode->addParent(currentNode); 
+            // existingNode->addParent(currentNode); 
             existingNode->setMinDistance(std::min(currentNode->getMinDistance() + 1, existingNode->getMinDistance()));         
         }
     }
@@ -170,6 +172,6 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
     }   
 
     // Repeat the algorithm with the smallestDistanceNode
-    return dijkstra(startNode, smallestDistanceNode, unexploredNodes, grid, endPosition);
+    return dijkstra(startNode, smallestDistanceNode, unexploredNodes, grid, endPosition, numNodes);
 
 }
