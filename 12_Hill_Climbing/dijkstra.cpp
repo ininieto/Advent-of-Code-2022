@@ -85,9 +85,7 @@ std::vector<std::pair<int, int>> getPossibleJumps(Node* currentNode, std::vector
     return possibleJumps;
 }
 
-// KNOWN BUG: Function always returning the start node
-
-// Recursive function that searchs all over the graph to check if there already exists a node
+// Recursive function that searchs all over the graph to check if there already exists a node. By reference, it is possible to "return" the target node
 void checkIfNodeExists(Node* currentNode, Node* &targetNode, std::pair<int, int> targetPosition){
 
     if(currentNode == NULL)
@@ -144,13 +142,10 @@ int dijkstra(Node* startNode, Node* currentNode, std::vector<Node*> unexploredNo
         if(!existingNode){
 
             Node* newNode = new Node(currentNode, jumpPosition, grid[jumpPosition.first][jumpPosition.second], INT_MAX);    // Create the node
-            // numNodes ++;
-            // std::cout << "Num nodes " << numNodes << '\n';
             unexploredNodes.push_back(newNode); 
         }
         else{
-            // The node already exists -> Must add the new parent and re-calculathe its minimum distance
-            // existingNode->addParent(currentNode); 
+            // The node already exists -> Must re-calculathe its minimum distance
             existingNode->setMinDistance(std::min(currentNode->getMinDistance() + 1, existingNode->getMinDistance()));         
         }
     }
