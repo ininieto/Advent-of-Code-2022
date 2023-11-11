@@ -10,10 +10,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <list>
 
+
+// Read input data from txt file
 std::string readInputText(std::string inputText){
 
-    // Read input data from txt file
     std::fstream inputfile;
     std::string inputData;
 
@@ -26,6 +28,52 @@ std::string readInputText(std::string inputText){
         }
     }
     return inputData;
+}
+
+std::vector<std::list<int>> readInfo(std::vector<std::string> pair){
+
+    // Iterate all over the strings and save the data in lists
+
+    std::vector<std::list<int>> packetLists;
+
+    for(std::string packet: pair){
+
+        std::list<int> packetList;
+
+        // Remove the first and last bracket, as it is always there
+        packet.erase(packet.begin());
+        packet.pop_back();
+
+        for(int i = 0; i < packet.length(); i++){
+
+            if(packet[i] == '[' && i != 0){   // Start of list inside packet
+
+            }
+            else if(packet[i] == ']' && i != packet.length() - 1){  // End of list inside packet
+
+            }
+            else if(packet[i] == ','){  // Separation of number OR LIST
+
+            }
+            else{   // Number
+                packetList.push_back(packet[i] - '0');
+
+            }
+        }
+
+        packetLists.push_back(packetList);
+
+    }
+
+    return packetLists;
+
+}
+
+void compareLists(std::vector<std::list<int>> packetLists){
+
+    // Compare the lists
+
+
 }
 
 int main(){
@@ -41,8 +89,13 @@ int main(){
             line.push_back(c);
         else{
 
-            if(line == "")  // If space between two lists
+            if(line == ""){  // If space between two lists
+
+                std::vector<std::list<int>> packetLists = readInfo(pair);
+                compareLists(packetLists);
+ 
                 pair.clear();
+            }
             else{
                 pair.push_back(line);
                 line.clear();
