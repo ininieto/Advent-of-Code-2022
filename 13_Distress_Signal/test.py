@@ -8,19 +8,24 @@ example = '[1,1,3,1,1]\n[1,1,5,1,1]\n\n[[1],[2,3,4]]\n[[1],4]\n\n[9]\n[[8,7,6]]\
 # Obtain a list of all the lines (God this is more comfortamble than C++)
 packet_list = example.split('\n')
 
+# Define an empty list that will contain the indexes of the open brackets
+open_brackets = []
 
 # For every line in the input --> for every packet¡
 for packet in packet_list:
     packet = packet[1:-1]   # Remove the first and last element
-    for c in packet:
+    for i in range (len(packet)):
+        c = packet[i]
         if(c == ','):
             continue
         elif(c == '['):
-            print('Llave abriendo')
-        elif(c == ']'):
-            print('Llave cerrando')
+            open_brackets.append(i)
+        elif(c == ']'): # I want to print the list 
+            substring = packet[open_brackets.pop() : i + 1]
+            print(substring)
         else:
-            print(c) # Print the number
+            if len(open_brackets) == 0:
+                print(c) # Print the number
         
-    print('\n')
+    print('-------------')
         
