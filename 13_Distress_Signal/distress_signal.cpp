@@ -39,6 +39,7 @@ std::vector<std::list<int>> readInfo(std::vector<std::string> pair){
     for(std::string packet: pair){
 
         std::list<int> packetList;
+        int numBrackets = 0;
 
         // Skip the first and the last character to omit the [ ] 
 
@@ -49,14 +50,14 @@ std::vector<std::list<int>> readInfo(std::vector<std::string> pair){
             // TODO: Implement all the complicated logic (maybe add a variable int numOpenLists to take account of the lists inside lists)
 
             if(c == '['){   // Start of list inside packet
-
+                numBrackets ++;
             }
             else if(c == ']'){  // End of list inside packet
 
             }
-            else if(c == ','){  // Separation of number OR LIST
+            else if(c == ',')  // Separation of number OR LIST
                 continue;
-            }
+                
             else{   // Number
                 packetList.push_back(c - '0');  // Insert the number as an int
 
