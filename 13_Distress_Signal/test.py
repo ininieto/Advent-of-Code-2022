@@ -11,9 +11,15 @@ packet_list = example.split('\n')
 # Define an empty list that will contain the indexes of the open brackets
 open_brackets = []
 
+# Separate the pairs
+num_pairs = 1
+new_pair = True
+
 # For every line in the input --> for every packet¡
 for packet in packet_list:
+
     packet = packet[1:-1]   # Remove the first and last element
+
     for i in range (len(packet)):
         c = packet[i]
         if(c == ','):
@@ -22,10 +28,11 @@ for packet in packet_list:
             open_brackets.append(i)
         elif(c == ']'): # I want to print the list 
             substring = packet[open_brackets.pop() : i + 1]
-            print(substring)
+            if len(open_brackets) == 0:
+                print(substring)
         else:
             if len(open_brackets) == 0:
                 print(c) # Print the number
         
     print('-------------')
-        
+
