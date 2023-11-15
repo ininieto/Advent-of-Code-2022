@@ -30,9 +30,9 @@ std::string readInputText(std::string inputText){
     return inputData;
 }
 
+// Iterate all over the strings and save the data in lists
+// TODO: Is it really worth to use lists? 
 std::vector<std::list<int>> readInfo(std::vector<std::string> pair){
-
-    // Iterate all over the strings and save the data in lists
 
     std::vector<std::list<int>> packetLists;
 
@@ -40,23 +40,25 @@ std::vector<std::list<int>> readInfo(std::vector<std::string> pair){
 
         std::list<int> packetList;
 
-        // Remove the first and last bracket, as it is always there
-        packet.erase(packet.begin());
-        packet.pop_back();
+        // Skip the first and the last character to omit the [ ] 
 
-        for(int i = 0; i < packet.length(); i++){
+        for(int i = 1; i < packet.length() - 1; i++){
 
-            if(packet[i] == '[' && i != 0){   // Start of list inside packet
+            char c = packet[i];
+
+            // TODO: Implement all the complicated logic (maybe add a variable int numOpenLists to take account of the lists inside lists)
+
+            if(c == '['){   // Start of list inside packet
 
             }
-            else if(packet[i] == ']' && i != packet.length() - 1){  // End of list inside packet
+            else if(c == ']'){  // End of list inside packet
 
             }
-            else if(packet[i] == ','){  // Separation of number OR LIST
-
+            else if(c == ','){  // Separation of number OR LIST
+                continue;
             }
             else{   // Number
-                packetList.push_back(packet[i] - '0');
+                packetList.push_back(c - '0');  // Insert the number as an int
 
             }
         }
@@ -69,9 +71,32 @@ std::vector<std::list<int>> readInfo(std::vector<std::string> pair){
 
 }
 
+// Compare the lists elment by element
 void compareLists(std::vector<std::list<int>> packetLists){
 
-    // Compare the lists
+    // I'll start with the simple case: list to list
+    int lenList1 = packetLists[0].size();
+    int lenList2 = packetLists[1].size();   // I need both to compare which has more elements
+
+    // We know that for Case 1 both lists have the same number of elements. Will need to refine this
+
+    for(auto e: packetLists[0]){
+        std::cout << e << ' ';
+    }
+    std::cout << '\n';
+
+    for(auto e: packetLists[1]){
+        std::cout << e << ' ';
+    }
+
+    std::cout << '\n';
+    std::cout << '\n';
+
+    
+    
+
+
+
 
 
 }
