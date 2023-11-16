@@ -54,6 +54,14 @@ for pair in packet_pairs:
 
         # TODO: Check the type of the elements. Must be aware of comparing lists        
 
+        if type(element_first_packet) != type(element_second_packet):
+            if type(element_first_packet) == int:
+                element_first_packet = [element_first_packet]
+            else:
+                element_second_packet = [element_second_packet]
+
+
+        # This way of comparing also works with lists :)
         if element_first_packet < element_second_packet:
             print("Right order")
             decision_made = True

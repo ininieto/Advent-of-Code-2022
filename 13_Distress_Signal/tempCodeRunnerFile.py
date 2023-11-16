@@ -1,4 +1,4 @@
-        if len(first_packet) > len(second_packet):
-            print("Wrong order")
-        else:
-            print("Right order")
+for pair in packet_pairs:
+    for packet in pair:
+        print(packet)
+    print("----------")
