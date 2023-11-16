@@ -25,8 +25,43 @@ packets_list = store_packets(splitted_example)
 # Create the pairs
 packet_pairs = create_packet_pairs(packets_list)
 
-for pair in packet_pairs:
-    for packet in pair:
-        print(str(packet) + "  Length: " + str(len(packet)))
-    print("-----------")
+# Now comes the funny part hahaha compare the lists
 
+for pair in packet_pairs:
+
+    first_packet = pair[0]
+    second_packet = pair[1]
+
+    decision_made = False
+
+    # Find the lower length of both pairs
+    if len(first_packet) == len(second_packet):
+        lower_length = len(first_packet)
+    elif len(first_packet) > len(second_packet):
+        lower_length = len(second_packet)
+    else:
+        lower_length = len(first_packet)
+    
+    # Iterate the packets at the same time
+    for i in range(lower_length):
+        element_first_packet = first_packet[i]
+        element_second_packet = second_packet[i]
+
+        # TODO: Check the type of the elements. Must be aware of comparing lists
+
+        if element_first_packet < element_second_packet:
+            print("Right order")
+            decision_made = True
+            break
+        elif element_first_packet > element_second_packet:
+            print("Wrong order")
+            decision_made = True
+            break
+    
+    # If there hasn't been a decision so far, the smaller list should be first
+
+    if not decision_made:
+        if len(first_packet) > len(second_packet):
+            print("Wrong order")
+        else:
+            print("Right order")
