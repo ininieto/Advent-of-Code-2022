@@ -8,6 +8,9 @@
 #
 #################################################################
 
+# Sorry but I found way easier to solve this problem in Python
+# Dealing with mixed type lists in C++ was kind of a pain
+
 from utils import store_packets, create_packet_pairs
 
 # Take the example input
