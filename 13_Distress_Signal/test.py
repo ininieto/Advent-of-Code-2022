@@ -25,6 +25,11 @@ packets_list = store_packets(splitted_example)
 # Create the pairs
 packet_pairs = create_packet_pairs(packets_list)
 
+for pair in packet_pairs:
+    for packet in pair:
+        print(packet)
+    print("----------")
+
 # Now comes the funny part hahaha compare the lists
 
 for pair in packet_pairs:
@@ -47,7 +52,7 @@ for pair in packet_pairs:
         element_first_packet = first_packet[i]
         element_second_packet = second_packet[i]
 
-        # TODO: Check the type of the elements. Must be aware of comparing lists
+        # TODO: Check the type of the elements. Must be aware of comparing lists        
 
         if element_first_packet < element_second_packet:
             print("Right order")

@@ -32,10 +32,26 @@ def store_packets(splitted_example):
                     packet.append(substring)
             else:
                 if len(open_brackets) == 0:
-                    packet.append(c)
+                    packet.append(int(c))
+
+        # The lists are treated as strings. Until now
+
+        aux_list = []
+        formatted_packet = []
         
-        # Add packet to a list of packets
-        packets_list.append(packet.copy())   # What is this need of doing a copy not to rewrite the data in the list? Python is shit
+        for element in packet:
+            if type(element) == str:
+                for c in element:
+                    if c != '[' and c != ']' and c != ',':
+                        aux_list.append(int(c))
+                    #elif type(c) == int:
+                        #aux_list.append(c)
+                formatted_packet.append(aux_list.copy())
+                aux_list.clear()
+            else:
+                formatted_packet.append(element)
+
+        packets_list.append(formatted_packet)
         packet.clear()
     
     return packets_list
