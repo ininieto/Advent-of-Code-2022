@@ -1,5 +1,14 @@
 import ast
 
+# Function to read text from file
+
+def read_from_file(input_file):
+
+    with open(input_file) as f:
+        data = f.read()
+        
+    return data
+
 # Function that processes the input data and stores it in lists
 
 def store_packets(splitted_example):

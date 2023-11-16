@@ -11,10 +11,11 @@
 # Sorry but I found way easier to solve this problem in Python
 # Dealing with mixed type lists in C++ was kind of a pain
 
-from utils import store_packets, create_packet_pairs
+from utils import read_from_file, store_packets, create_packet_pairs
 
 # Take the example input
-example = "[1,1,3,1,1]\n[1,1,5,1,1]\n\n[[1],[2,3,4]]\n[[1],4]\n\n[9]\n[[8,7,6]]\n\n[[4,4],4,4]\n[[4,4],4,4,4]\n\n[7,7,7,7]\n[7,7,7]\n\n[]\n[3]\n\n[[[]]]\n[[]]\n\n[1,[2,[3,[4,[5,6,7]]]],8,9]\n[1,[2,[3,[4,[5,6,0]]]],8,9]"
+example = read_from_file("example.txt")
+input = read_from_file("input.txt")
 
 # Obtain a list of all the lines (God this is more comfortamble than C++)
 splitted_example = example.split('\n')
@@ -25,14 +26,14 @@ packets_list = store_packets(splitted_example)
 # Create the pairs
 packet_pairs = create_packet_pairs(packets_list)
 
-for pair in packet_pairs:
-    for packet in pair:
-        print(packet)
-    print("----------")
+# Compare the pairs and get the result
 
-# Now comes the funny part hahaha compare the lists
+result = 0
 
-for pair in packet_pairs:
+
+for i in range(len(packet_pairs)):
+
+    pair = packet_pairs[i]
 
     first_packet = pair[0]
     second_packet = pair[1]
@@ -48,9 +49,9 @@ for pair in packet_pairs:
         lower_length = len(first_packet)
     
     # Iterate the packets at the same time
-    for i in range(lower_length):
-        element_first_packet = first_packet[i]
-        element_second_packet = second_packet[i]
+    for j in range(lower_length):
+        element_first_packet = first_packet[j]
+        element_second_packet = second_packet[j]
 
         # TODO: Check the type of the elements. Must be aware of comparing lists        
 
@@ -64,6 +65,7 @@ for pair in packet_pairs:
         # This way of comparing also works with lists :)
         if element_first_packet < element_second_packet:
             print("Right order")
+            result += (i + 1)
             decision_made = True
             break
         elif element_first_packet > element_second_packet:
@@ -78,3 +80,6 @@ for pair in packet_pairs:
             print("Wrong order")
         else:
             print("Right order")
+            result += (i + 1)
+
+print("The result is " + str(result))
