@@ -11,7 +11,7 @@
 # Sorry but I found way easier to solve this problem in Python
 # Dealing with mixed-type lists in C++ was kind of a pain
 
-from utils import read_from_file, store_packets, create_packet_pairs, checkOrder
+from utils_2 import read_from_file, store_packets, create_packet_pairs, checkOrder
 
 # Take the example input
 example = read_from_file("example.txt")
