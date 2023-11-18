@@ -36,20 +36,12 @@ def create_packet_pairs(packets_list):
 
 # The big boy. This function will perform all the logic of comparing the lists
 
-# TODO: As the function is now recirsive, the idea of the indexes for summing up the result is not working
-# In addition, must check when a pair is already compared. In Example 8 it works comparing the lists, but after
-# giving a result, it jumps back and start comparing 8-8 and 9-9. Must fix that too
-
-# I could try to define a subfunction called checkRightOrder() that only returns true when 
-# right order. Later simply if checkRightOrder: result += i
-
 def checkOrder(pair):
 
     first_packet = pair[0]
     second_packet = pair[1]
 
-    decision_made = False
-    result = False
+    result = ""
 
     # Find the lower length of both pairs
     if len(first_packet) == len(second_packet):
@@ -82,28 +74,29 @@ def checkOrder(pair):
             result = checkOrder([element_first_packet, element_second_packet])
 
         # If the order is already decided --> Probably fails, as just check if decides that the result is correct
-        # if result:
-        #    return result
+        if len(result) > 0:
+           return result
 
         # Compare the numbers
         if type(element_first_packet) == int and type(element_second_packet) == int:
             if element_first_packet < element_second_packet:
                 print("Right order")
-                result = True
-                decision_made = True
+                result = "right"
                 return result
             elif element_first_packet > element_second_packet:
                 print("Wrong order")
-                decision_made = True
-                break
+                result = "wrong"
+                return result
     
     # If there hasn't been a decision so far, the smaller list should be first
-    if not decision_made:
+    if len(result) == 0:
         if len(first_packet) > len(second_packet):
             print("Wrong order")
+            result = "wrong"
+            return result
         elif len(second_packet) > len(first_packet):
             print("Right order")
-            result = True
+            result = "right"
             return result
 
     return result
