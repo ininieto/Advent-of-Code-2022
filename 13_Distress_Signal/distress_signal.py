@@ -11,7 +11,7 @@
 # Sorry but I found way easier to solve this problem in Python
 # Dealing with mixed type lists in C++ was kind of a pain
 
-from utils import read_from_file, store_packets, create_packet_pairs, get_result
+from utils import read_from_file, store_packets, create_packet_pairs, checkOrder
 
 # Take the example input
 example = read_from_file("example.txt")
@@ -27,6 +27,14 @@ packets_list = store_packets(splitted_example)
 packet_pairs = create_packet_pairs(packets_list)
 
 # Compare the pairs and get the result
-result = get_result(packet_pairs)
+result = 0
+
+for i in range(len(packet_pairs)):  # I perform a C-style loop because I need to keep track of the indexes
+    pair = packet_pairs[i]
+
+    if checkOrder(pair):
+        print("Index: " + str(i + 1))
+        result += (i + 1)
+
 
 print("The result is " + str(result))
