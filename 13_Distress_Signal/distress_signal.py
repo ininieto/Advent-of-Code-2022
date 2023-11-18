@@ -9,7 +9,7 @@
 #################################################################
 
 # Sorry but I found way easier to solve this problem in Python
-# Dealing with mixed type lists in C++ was kind of a pain
+# Dealing with mixed-type lists in C++ was kind of a pain
 
 from utils import read_from_file, store_packets, create_packet_pairs, checkOrder
 
@@ -18,7 +18,7 @@ example = read_from_file("example.txt")
 input = read_from_file("input.txt")
 
 # Obtain a list of all the lines (God this is more comfortamble than C++)
-splitted_example = example.split('\n')
+splitted_example = input.split('\n')
 
 # Store the input string as data in lists to work with it
 packets_list = store_packets(splitted_example)
