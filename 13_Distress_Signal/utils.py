@@ -76,22 +76,18 @@ def checkOrder(pair):
         # Compare the numbers
         if type(element_first_packet) == int and type(element_second_packet) == int:
             if element_first_packet < element_second_packet:
-                print("Right order")
                 result = "right"
                 return result
             elif element_first_packet > element_second_packet:
-                print("Wrong order")
                 result = "wrong"
                 return result
     
     # If there hasn't been a decision so far, the smaller list should be first
     if len(result) == 0:
         if len(first_packet) > len(second_packet):
-            print("Wrong order")
             result = "wrong"
             return result
         elif len(second_packet) > len(first_packet):
-            print("Right order")
             result = "right"
             return result
 
