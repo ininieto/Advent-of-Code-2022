@@ -7,6 +7,16 @@
 
 */
 
+/*
+    First approach:
+        - At first I need to read the instructions, and like that I can guess the wide and high of the grid
+        - To read the instructions I guess I'll store the values in std::pairs
+        - With that done it should be really easy to place # in the grid
+        - With that done, we can jump to the algorithm. I think I will do it recursively
+        - I'm unsure about how to determine if we fall in abyss. Maybe if y_coord < lowest_rock
+
+*/
+
 #include <iostream>
 #include <vector>
 
@@ -28,9 +38,6 @@ int main(){
 
     // Set the Sand Source
     grid[0][6] = '+';
-
-    
-
 
     
 
