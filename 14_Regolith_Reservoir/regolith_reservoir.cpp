@@ -18,6 +18,7 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 
@@ -34,44 +35,77 @@ std::vector<std::string> split(std::string text, std::string delim){
         text.erase(0, pos + delim.length());
     }
 
-    splittedText.push_back(text);// The last element is not added to the vector otherwise
+    if(text.length() > 0)
+        splittedText.push_back(text);
+
     return splittedText;
+}
+
+// Read input data from txt file
+std::string readInputText(std::string inputText){
+
+    std::fstream inputfile;
+    std::string inputData;
+
+    inputfile.open(inputText, std::ios::in);
+    if (inputfile.is_open()){
+        std::string tp;
+        while (getline(inputfile, tp)){
+            inputData += tp;
+            inputData += "\n";
+        }
+    }
+    return inputData;
 }
 
 int main(){
 
-
-    std::string example = "498,4 -> 498,6 -> 496,6\n503,4 -> 502,4 -> 502,9 -> 494,9";
+    std::string example = "498,4 -> 498,6 -> 496,6\n503,4 -> 502,4 -> 502,9 -> 494,9\n";
+    std::string inputData = readInputText("input.txt");
 
     // Split the string by lines
     std::vector<std::string> splittedExample = split(example, "\n");
+    std::vector<std::string> splittedData = split(inputData, "\n");
 
     // Store the data in a vector
 
-    // std::vector<std::vector<std::pair<int, int>>> rockPositions;
+    std::vector<std::vector<std::pair<int, int>>> rockPositions;
 
     for(std::string line: splittedExample){
         
-        std::vector<std::string> instruction = split(line, " -> "); // Separate the 
+        std::vector<std::string> instruction = split(line, " -> "); 
 
         std::vector<std::pair<int, int>> rocks;
         for(std::string position: instruction){
             // Separate the x and y coord, convert to int and store in a vector (the line looks illegible tbh)
             rocks.push_back(std::make_pair(stoi(position.substr(0, position.find(','))), stoi(position.substr(position.find(',') + 1))));   // Store the coordinates in a vector
         }
-
-        // It could be good to place the rocks in the grid here, but I still don't know the high/wide :( Must be done later
+        // Fill in the big vector
+        rockPositions.push_back(rocks);
     }
 
+    // Guess the dimensions of our grid
+    int minX = INT_MAX, maxX = -1, maxY = -1;
 
+    // Obtain the highest and lowest position of X and Y
+    for(auto line: rockPositions){
+        for(auto corner: line){
+            if(corner.first > maxX)
+                maxX = corner.first;
+            if(corner.second > maxY)
+                maxY = corner.second;
+            if(corner.first < minX)
+                minX = corner.first;
+        }  
+    }
 
+    int high = maxY + 1;    // Could be possible to establish margins 
+    int wide = maxX - minX + 1;
     
-    int high = 10, wide = 10; // I know it for the example, in the real problem I will need to guess this
-    
-    
+   // Define the grid 
     std::vector<std::vector<char>> grid(high, std::vector<char>(wide));
 
-    // Set the grid to empty
+    // Set the grid to empty (in this case represented with .)
     for (auto &row : grid){
         for (auto &element : row){
             element = '.';
@@ -81,7 +115,13 @@ int main(){
     // Set the Sand Source
     grid[0][6] = '+';
 
-    
+    // Debug: Print the grid
+    for (auto &row : grid){
+        for (auto &element : row){
+            std::cout << element;
+        }
+        std::cout << '\n';
+    }
 
     return 0;
 }
