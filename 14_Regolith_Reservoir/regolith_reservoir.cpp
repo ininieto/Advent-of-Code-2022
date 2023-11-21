@@ -7,16 +7,6 @@
 
 */
 
-/*
-    First approach:
-        - At first I need to read the instructions, and like that I can guess the wide and high of the grid
-        - To read the instructions I guess I'll store the values in std::pairs
-        - With that done it should be really easy to place # in the grid
-        - With that done, we can jump to the algorithm. I think I will do it recursively
-        - I'm unsure about how to determine if we fall in abyss. Maybe if y_coord < lowest_rock
-
-*/
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -97,20 +87,15 @@ void placeRocksInGrid(std::vector<std::vector<std::pair<int, int>>> rockPosition
                 for(int x = xStart - conversion; x < xEnd - conversion; x++){
                     grid[corner.second][x] = '#';
                 }
-
             }
         }  
     }
-
-
 }
 
 int main(){
 
     std::string example = "498,4 -> 498,6 -> 496,6\n503,4 -> 502,4 -> 502,9 -> 494,9\n";
     std::string inputData = readInputText("input.txt");
-
-    const int conversion = 494; // The example starts in 494
 
     // Split the string by lines
     std::vector<std::string> splittedExample = split(example, "\n");
@@ -120,7 +105,7 @@ int main(){
 
     std::vector<std::vector<std::pair<int, int>>> rockPositions;
 
-    for(std::string line: splittedExample){
+    for(std::string line: splittedData){
         
         std::vector<std::string> instruction = split(line, " -> "); 
 
@@ -150,6 +135,7 @@ int main(){
 
     int high = maxY + 1;    // Could be possible to establish margins 
     int wide = maxX - minX + 1;
+    int conversion = minX;
     
    // Define the grid 
     std::vector<std::vector<char>> grid(high, std::vector<char>(wide));
@@ -162,7 +148,7 @@ int main(){
     }
 
     // Set the Sand Source
-    grid[0][6] = '+';
+    grid[0][500 - conversion] = '+';
 
 
     // Set the rocks in the grid
