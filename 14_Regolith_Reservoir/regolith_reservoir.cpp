@@ -58,10 +58,59 @@ std::string readInputText(std::string inputText){
     return inputData;
 }
 
+void printGrid(std::vector<std::vector<char>> grid){
+
+    for(int i = 0; i < grid.size(); i++){
+        std::cout << i << ' ';
+        for(int j = 0; j < grid[i].size(); j++){
+            std::cout << grid[i][j];
+        }
+        std::cout << '\n';
+    }
+}
+
+void placeRocksInGrid(std::vector<std::vector<std::pair<int, int>>> rockPositions, std::vector<std::vector<char>> &grid, int conversion){
+
+    for(auto line: rockPositions){
+        for(int i = 1; i < line.size(); i++){
+
+            std::pair<int, int> prevCorner = line[i - 1];
+            std::pair<int, int> corner = line[i];
+
+            int xDiff = abs(corner.first - prevCorner.first);
+
+            if(xDiff == 0){
+
+                int x = corner.first - conversion;
+                int yStart = (prevCorner.second < corner.second) ? prevCorner.second : corner.second;
+                int yEnd = (prevCorner.second < corner.second) ? corner.second + 1 : prevCorner.second + 1;
+                 
+                for(int y = yStart; y < yEnd; y++){
+                    grid[y][x] = '#';
+                }
+            }
+            else{   // If yDiff == 0
+                int y = corner.second;
+                int xStart = (prevCorner.first < corner.first) ? prevCorner.first : corner.first;
+                int xEnd = (prevCorner.first < corner.first) ? corner.first + 1: prevCorner.first + 1;
+
+                for(int x = xStart - conversion; x < xEnd - conversion; x++){
+                    grid[corner.second][x] = '#';
+                }
+
+            }
+        }  
+    }
+
+
+}
+
 int main(){
 
     std::string example = "498,4 -> 498,6 -> 496,6\n503,4 -> 502,4 -> 502,9 -> 494,9\n";
     std::string inputData = readInputText("input.txt");
+
+    const int conversion = 494; // The example starts in 494
 
     // Split the string by lines
     std::vector<std::string> splittedExample = split(example, "\n");
@@ -115,13 +164,12 @@ int main(){
     // Set the Sand Source
     grid[0][6] = '+';
 
-    // Debug: Print the grid
-    for (auto &row : grid){
-        for (auto &element : row){
-            std::cout << element;
-        }
-        std::cout << '\n';
-    }
+
+    // Set the rocks in the grid
+    placeRocksInGrid(rockPositions, grid, conversion);
+
+    printGrid(grid);
+
 
     return 0;
 }
