@@ -11,7 +11,6 @@
 #include <fstream>
 #include <vector>
 
-
 // Function to split a std::string by a specific delimitator
 std::vector<std::string> split(std::string text, std::string delim){
 
@@ -93,14 +92,13 @@ void placeRocksInGrid(std::vector<std::vector<std::pair<int, int>>> rockPosition
     This function will check whether the sand block can fall or will stay still
     The function will call itself recursively until the block stops
 */
-void sandFlow(std::pair<int, int> initialPosition, std::vector<std::vector<char>> &grid){
+bool sandFlow(std::pair<int, int> initialPosition, std::vector<std::vector<char>> &grid){
 
-    // TODO: Must check here that we're not out of bounds
+    int limHigh = grid.size() - 2;
+    int limWide = grid[0].size() - 2;
 
-    /*
-    if(outOfBounds)
-        return somethingToKnowThatWeFinish
-    */
+    if(initialPosition.first > limHigh || initialPosition.second < 0 || initialPosition.second > limWide)   // If out of bounds
+        return true;
 
     if(grid[initialPosition.first + 1][initialPosition.second] == '.')             // Check bottom position
         return sandFlow(std::make_pair(initialPosition.first + 1, initialPosition.second), grid);
@@ -111,6 +109,7 @@ void sandFlow(std::pair<int, int> initialPosition, std::vector<std::vector<char>
 
     // Place the sandball if the ball cannot move more 
     grid[initialPosition.first][initialPosition.second] = 'o';
+    return false;
 }
 
 int main(){
@@ -125,7 +124,7 @@ int main(){
     // Store the data in a vector
     std::vector<std::vector<std::pair<int, int>>> rockPositions;
 
-    for(std::string line: splittedExample){
+    for(std::string line: splittedData){
         
         std::vector<std::string> instruction = split(line, " -> "); 
 
@@ -153,12 +152,14 @@ int main(){
         }  
     }
 
-    int high = maxY + 1;    // Could be possible to establish margins 
+    int high = maxY + 1;    
     int wide = maxX - minX + 1;
-    int offset = minX;  // This will be our reference
+
+    // This will be our reference
+    int offset = minX - 1;  // We establish a margin on each side. Substracting one will center the grid
     
    // Define the grid 
-    std::vector<std::vector<char>> grid(high, std::vector<char>(wide));
+    std::vector<std::vector<char>> grid(high + 1, std::vector<char>(wide + 2)); // Added margins: one row down and one column on each side
 
     // Set the grid to empty (in this case represented with .)
     for (auto &row : grid){
@@ -174,15 +175,13 @@ int main(){
     // Set the rocks in the grid
     placeRocksInGrid(rockPositions, grid, offset);
 
-    // First attempt just with one block. Will probably need to call it inside a while loop
+    // Big loop
     int numBalls = 0;
-    
-    while(1){
-        sandFlow(sourcePosition, grid);
-        printGrid(grid);
-        numBalls ++;
-    }
+    while(!sandFlow(sourcePosition, grid)) numBalls ++;
 
+    // Log the results
+    printGrid(grid);
+    std::cout << "The result is " << numBalls << '\n';
 
     return 0;
 }
