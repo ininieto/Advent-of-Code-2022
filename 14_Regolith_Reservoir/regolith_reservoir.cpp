@@ -57,6 +57,7 @@ void printGrid(std::vector<std::vector<char>> grid){
         }
         std::cout << '\n';
     }
+    std::cout << '\n';
 }
 
 void placeRocksInGrid(std::vector<std::vector<std::pair<int, int>>> rockPositions, std::vector<std::vector<char>> &grid, int conversion){
@@ -92,6 +93,27 @@ void placeRocksInGrid(std::vector<std::vector<std::pair<int, int>>> rockPosition
     }
 }
 
+/*  
+    This function will check whether the sand block can fall or will stay still
+    The function will call itself recursively until the block stops
+*/
+void sandFlow(std::pair<int, int> initialPosition, std::vector<std::vector<char>> &grid){
+
+    if(grid[initialPosition.first + 1][initialPosition.second] == '.'){             // Check bottom position
+        return sandFlow(std::make_pair(initialPosition.first + 1, initialPosition.second), grid);
+    }
+    else if(grid[initialPosition.first + 1][initialPosition.second - 1] == '.'){    // Check bottom-left position
+        return sandFlow(std::make_pair(initialPosition.first + 1, initialPosition.second - 1), grid);
+    }
+    else if(grid[initialPosition.first + 1][initialPosition.second + 1] == '.'){    // Check bottom-right position
+        return sandFlow(std::make_pair(initialPosition.first + 1, initialPosition.second + 1), grid);
+    }
+
+    grid[initialPosition.first][initialPosition.second] = 'o';
+    printGrid(grid);
+
+}
+
 int main(){
 
     std::string example = "498,4 -> 498,6 -> 496,6\n503,4 -> 502,4 -> 502,9 -> 494,9\n";
@@ -105,7 +127,7 @@ int main(){
 
     std::vector<std::vector<std::pair<int, int>>> rockPositions;
 
-    for(std::string line: splittedData){
+    for(std::string line: splittedExample){
         
         std::vector<std::string> instruction = split(line, " -> "); 
 
@@ -135,7 +157,7 @@ int main(){
 
     int high = maxY + 1;    // Could be possible to establish margins 
     int wide = maxX - minX + 1;
-    int conversion = minX;
+    int conversion = minX;  // This will be our reference
     
    // Define the grid 
     std::vector<std::vector<char>> grid(high, std::vector<char>(wide));
@@ -148,13 +170,22 @@ int main(){
     }
 
     // Set the Sand Source
-    grid[0][500 - conversion] = '+';
-
+    std::pair<int, int> sourcePosition = std::make_pair(0, 500 - conversion);
+    grid[sourcePosition.first][sourcePosition.second] = '+';
 
     // Set the rocks in the grid
     placeRocksInGrid(rockPositions, grid, conversion);
 
     printGrid(grid);
+
+    int numBalls = 0;
+
+    // First attempt just with one block. Will probably need to call it inside a while loop
+    while(1){
+        sandFlow(sourcePosition, grid);
+        printGrid(grid);
+        numBalls ++;
+    }
 
 
     return 0;
