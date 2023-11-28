@@ -1,9 +1,3 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-
-using namespace std;
-
 /*
     Advent of Code 2022 - 02.12.2022
     
@@ -12,6 +6,27 @@ using namespace std;
     Author of the solution: Íñigo Nieto Cuadrado
 
 */
+
+#include <iostream>
+#include <string>
+#include <fstream>
+
+// Read input data from txt file
+std::string readInputText(std::string inputText){
+
+    std::fstream inputfile;
+    std::string inputData;
+
+    inputfile.open(inputText, std::ios::in);
+    if (inputfile.is_open()){
+        std::string tp;
+        while (getline(inputfile, tp)){
+            inputData += tp;
+            inputData += "\n";
+        }
+    }
+    return inputData;
+}
 
 /*
     The first column is the opponent's choice, so the second is ours.
@@ -59,21 +74,8 @@ int assignGameScore(char opponentsChoice, char myChoice)
 
 int main(){
 
-    string example = "A Y\nB X\nC Z\n";
-
-    // Read input data from txt file
-    fstream inputfile;
-
-    string inputData;
-
-    inputfile.open("input.txt", ios::in);
-    if(inputfile.is_open()){
-        string tp;
-        while(getline(inputfile, tp)){
-            inputData += tp;
-            inputData += "\n";
-        }
-    }
+    std::string example = "A Y\nB X\nC Z\n";
+    std::string inputData = readInputText("input.txt");
 
     char opponentsChoice = ' ';
     char myChoice = ' ';
@@ -103,7 +105,7 @@ int main(){
 
     }
 
-    cout << "The final score is " << totalScore;
+    std::cout << "The final score is " << totalScore << '\n';
 
     return 0;
 }
