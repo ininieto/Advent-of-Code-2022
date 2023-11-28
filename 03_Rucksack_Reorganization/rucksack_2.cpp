@@ -1,12 +1,3 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <unordered_map>
-#include <algorithm>
-#include <vector>
-
-using namespace std;
-
 /*
     Advent of Code 2022 - 03.12.2022
     
@@ -15,6 +6,13 @@ using namespace std;
     Author of the solution: Íñigo Nieto Cuadrado
 
 */
+
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <unordered_map>
+#include <algorithm>
+#include <vector>
 
 /*
     I need to assign a priority to each letter like:
@@ -27,6 +25,23 @@ using namespace std;
 
     For lowercase letters I need to substract 96, and for Uppercase, 38
 */
+
+// Read input data from txt file
+std::string readInputText(std::string inputText){
+
+    std::fstream inputfile;
+    std::string inputData;
+
+    inputfile.open(inputText, std::ios::in);
+    if (inputfile.is_open()){
+        std::string tp;
+        while (getline(inputfile, tp)){
+            inputData += tp;
+            inputData += "\n";
+        }
+    }
+    return inputData;
+}
 
 int obtainPriority(char c){
 
@@ -45,28 +60,16 @@ int obtainPriority(char c){
 
 int main(){
 
-    string example = "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw\n";
+    std::string example = "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw\n";
+    std::string inputData = readInputText("input.txt");
     
-    // Read input data from txt file
-    fstream inputfile;
-
-    string inputData;
-
-    inputfile.open("input.txt", ios::in);
-    if(inputfile.is_open()){
-        string tp;
-        while(getline(inputfile, tp)){
-            inputData += tp;
-            inputData += "\n";
-        }
-    }
     
-    string rucksacks[3]; // Array that will contain groups of three rucksacks
+    std::string rucksacks[3]; // Array that will contain groups of three rucksacks
 
-    unordered_map <char, int> elementsFirstRucksack; // Map that will contain all the characters of the first rucksack
+    std::unordered_map <char, int> elementsFirstRucksack; // Map that will contain all the characters of the first rucksack
 
     char elementInCommon = ' ';
-    vector <char> elementsInCommon;
+    std::vector <char> elementsInCommon;
     int totalPriority = 0;
 
     int rucksackCount = 0; // Variable to count the three rucksacks in a group
@@ -127,7 +130,7 @@ int main(){
         }
     }
 
-        cout << "The total priority is " << totalPriority << endl;
+        std::cout << "The total priority is " << totalPriority << '\n';
 
         return 0;
 }
