@@ -1,9 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <unordered_map>
-#include <fstream>
-
 /*
     Advent of Code 2022 - 11.12.2022
 
@@ -13,9 +7,15 @@
 
 */
 
-std::string readInputText(std::string inputText){
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <unordered_map>
+#include <fstream>
 
-    // Read input data from txt file
+// Read input data from txt file
+std::string readInputText(std::string inputText){
+    
     std::fstream inputfile;
     std::string inputData;
 
@@ -102,9 +102,7 @@ void handleTrue(std::string action, std::vector<std::vector<std::pair<int, int>>
         }
     }
 
-    // Known bug --> When I remove an element from the vector, the rest of the indexes change. Must fix
     // Maybe not the most beautiful code, but works :)
-
     for(int i = 0; i < elementsToRemove.size(); i++){
         for(int j = 0; j < monkeyItems[numMonkey].size(); j++){
 
@@ -131,9 +129,7 @@ void handleFalse(std::string action, std::vector<std::vector<std::pair<int, int>
         }
     }
 
-    // Known bug --> When I remove an element from the vector, the rest of the indexes change. Must fix
-    // Maybe not the most beautiful code, but works :)
-
+     // Maybe not the most beautiful code, but works :)
     for(int i = 0; i < elementsToRemove.size(); i++){
         for(int j = 0; j < monkeyItems[numMonkey].size(); j++){
 

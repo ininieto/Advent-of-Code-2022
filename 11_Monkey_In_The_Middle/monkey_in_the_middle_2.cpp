@@ -1,9 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <unordered_map>
-#include <fstream>
-
 /*
     Advent of Code 2022 - 11.12.2022
 
@@ -13,9 +7,15 @@
 
 */
 
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <unordered_map>
+#include <fstream>
+
+// Read input data from txt file
 std::string readInputText(std::string inputText){
 
-    // Read input data from txt file
     std::fstream inputfile;
     std::string inputData;
 
