@@ -1,9 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <unordered_map>
-
-#include "NonBinaryNode.cpp"    // I know this is not the most elegant way to do this, but I don't feel like creating headers
-
 /*
     Advent of Code 2022 - 07.12.2022
 
@@ -13,9 +7,15 @@
 
 */
 
+#include <iostream>
+#include <fstream>
+#include <unordered_map>
+
+#include "NonBinaryNode.cpp"    // I know this is not the most elegant way to do this, but I don't feel like creating headers
+
+// Read input data from txt file
 std::string readInputText(std::string inputText){
 
-    // Read input data from txt file
     std::fstream inputfile;
     std::string inputData;
 
@@ -177,7 +177,6 @@ int main(){
             smallest = dir.second;
     }
     
-
     std::cout << std::fixed << "The solution is " << smallest << std::endl;
 
     return 0;
