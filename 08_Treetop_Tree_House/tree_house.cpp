@@ -1,9 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <fstream>
-
-using namespace std;
-
 /*
     Advent of Code 2022 - 08.12.2022
 
@@ -13,7 +7,12 @@ using namespace std;
 
 */
 
-bool checkVisibleTopLeft(vector<int> row, int treeIndex, int& visibleTrees){
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+
+bool checkVisibleTopLeft(std::vector<int> row, int treeIndex, int& visibleTrees){
 
     for(int i = 0; i < treeIndex; i++){
         if(row[i] >= row[treeIndex])  // If there is a taller tree
@@ -23,7 +22,7 @@ bool checkVisibleTopLeft(vector<int> row, int treeIndex, int& visibleTrees){
     return true;
 }
 
-bool checkVisibleBottomRight(vector<int> row, int treeIndex, int& visibleTrees){    // I could probably compact the two fucntions in 1 but meh
+bool checkVisibleBottomRight(std::vector<int> row, int treeIndex, int& visibleTrees){    // I could probably compact the two fucntions in 1 but meh
 
     int len = row.size();
 
@@ -38,8 +37,8 @@ bool checkVisibleBottomRight(vector<int> row, int treeIndex, int& visibleTrees){
 int main(){
 
     const int nrows = 99, ncols = 99;
-    vector <vector<int>> rows(nrows, vector<int>(ncols));    // 2D vector with all the rows
-    vector <vector<int>> cols(ncols, vector<int>(nrows));    // 2D vector with all the cols
+    std::vector <std::vector<int>> rows(nrows, std::vector<int>(ncols));    // 2D vector with all the rows
+    std::vector <std::vector<int>> cols(ncols, std::vector<int>(nrows));    // 2D vector with all the cols
     int visibleTrees = 0;
 
     /*
@@ -53,12 +52,12 @@ int main(){
     */
 
     // Read input data from txt file
-    fstream inputfile;
+    std::fstream inputfile;
 
-    inputfile.open("input.txt", ios::in);
+    inputfile.open("input.txt", std::ios::in);
     if(inputfile.is_open()){
         int i = 0;
-        string tp;
+        std::string tp;
         while(getline(inputfile, tp)){
             for(int j = 0; j < ncols; j++){
                 rows[i][j] = tp[j] - '0';   // Fill in rows vector
@@ -75,9 +74,9 @@ int main(){
     // Check visible
     
     for (int i = 1; i < nrows - 1; i++){    // Check only the inner trees
-        vector<int> row = rows[i];
+        std::vector<int> row = rows[i];
         for(int j = 1; j < ncols - 1; j++){
-            vector<int> col = cols[j];
+            std::vector<int> col = cols[j];
             if (checkVisibleTopLeft(row, j, visibleTrees))          // Left
                 continue;
             else if (checkVisibleBottomRight(row, j, visibleTrees)) // Right
@@ -89,7 +88,7 @@ int main(){
         }
     }
 
-    cout << "There are " << visibleTrees << " visible trees" << endl;
+    std::cout << "There are " << visibleTrees << " visible trees" << '\n';
 
     return 0;
 }
