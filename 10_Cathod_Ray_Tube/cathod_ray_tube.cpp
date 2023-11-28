@@ -1,6 +1,3 @@
-#include <iostream>
-#include <unordered_map>
-#include <fstream>
 /*
     Advent of Code 2022 - 10.12.2022
 
@@ -10,9 +7,13 @@
 
 */
 
+#include <iostream>
+#include <unordered_map>
+#include <fstream>
+
+// Read input data from txt file
 std::string readInputText(std::string inputText){
 
-    // Read input data from txt file
     std::fstream inputfile;
     std::string inputData;
 
@@ -40,7 +41,6 @@ void handleAddx(int &cycle, int num, int &xReg, std::unordered_map<int, int> &si
     checkCycle(cycle, xReg, signalStrength);
     checkCycle(cycle, xReg, signalStrength);
     xReg += num;
-
 }
 
 int main(){

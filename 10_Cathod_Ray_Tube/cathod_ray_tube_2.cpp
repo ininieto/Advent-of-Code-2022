@@ -1,6 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <fstream>
 /*
     Advent of Code 2022 - 10.12.2022
 
@@ -10,9 +7,13 @@
 
 */
 
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+// Read input data from txt file
 std::string readInputText(std::string inputText){
 
-    // Read input data from txt file
     std::fstream inputfile;
     std::string inputData;
 
