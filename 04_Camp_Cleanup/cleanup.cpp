@@ -1,9 +1,3 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-
-using namespace std;
-
 /*
     Advent of Code 2022 - 04.12.2022
 
@@ -12,6 +6,27 @@ using namespace std;
     Author of the solution: Íñigo Nieto Cuadrado
 
 */
+
+#include <iostream>
+#include <string>
+#include <fstream>
+
+// Read input data from txt file
+std::string readInputText(std::string inputText){
+
+    std::fstream inputfile;
+    std::string inputData;
+
+    inputfile.open(inputText, std::ios::in);
+    if (inputfile.is_open()){
+        std::string tp;
+        while (getline(inputfile, tp)){
+            inputData += tp;
+            inputData += "\n";
+        }
+    }
+    return inputData;
+}
 
 int checkOverlap(int lowerBound1, int upperBound1, int lowerBound2, int upperBound2){
 
@@ -25,26 +40,13 @@ int checkOverlap(int lowerBound1, int upperBound1, int lowerBound2, int upperBou
 
 int main(){
 
-    string example = "2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8\n";
-
-    // Read input data from txt file
-    fstream inputfile;
-
-    string inputData;
-
-    inputfile.open("input.txt", ios::in);
-    if (inputfile.is_open()){
-        string tp;
-        while (getline(inputfile, tp)){
-            inputData += tp;
-            inputData += "\n";
-        }
-    }
+    std::string example = "2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8\n";
+    std::string inputData = readInputText("input.txt");
 
     int lowerBound1 = 0, upperBound1 = 0; // Input for the first Elf of the pair
     int lowerBound2 = 0, upperBound2 = 0; // Input for the second Elf of the pair
 
-    string line;
+    std::string line;
 
     int totalOverlap = 0;
 
@@ -78,7 +80,7 @@ int main(){
             upperBound2 = 0;
         }
     }
-    cout << "The amount of overlaps is " << totalOverlap << endl;
+    std::cout << "The amount of overlaps is " << totalOverlap << '\n';
 
     return 0;
 }
