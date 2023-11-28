@@ -1,7 +1,7 @@
 /*
-    Advent of Code 2022 - 14.12.2022
+    Advent of Code 2022 - 15.12.2022
 
-    Link to the problem: https://adventofcode.com/2022/day/14
+    Link to the problem: https://adventofcode.com/2022/day/15
 
     Author of the solution: Íñigo Nieto Cuadrado
 
