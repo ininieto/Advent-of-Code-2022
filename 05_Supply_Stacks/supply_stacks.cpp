@@ -1,9 +1,3 @@
-#include <iostream>
-#include <stack>
-#include <fstream>
-
-using namespace std;
-
 /*
     Advent of Code 2022 - 05.12.2022
 
@@ -12,6 +6,27 @@ using namespace std;
     Author of the solution: Íñigo Nieto Cuadrado
 
 */
+
+#include <iostream>
+#include <stack>
+#include <fstream>
+
+// Read input data from txt file
+std::string readInputText(std::string inputText){
+
+    std::fstream inputfile;
+    std::string inputData;
+
+    inputfile.open(inputText, std::ios::in);
+    if (inputfile.is_open()){
+        std::string tp;
+        while (getline(inputfile, tp)){
+            inputData += tp;
+            inputData += "\n";
+        }
+    }
+    return inputData;
+}
 
 int main(){
 
@@ -26,32 +41,19 @@ int main(){
     // Define the input dataset
     
     const int numStacks = 9;
-    string inputData[numStacks] = {"WMLF", "BZVMF", "HVRSLQ", "FSVQPMTJ", "LSW", "FVPMRJW", "JQCPNRF", "VHPSZWRB", "BMJCGHZW"};
-    stack <char> stacks[numStacks];
-    string instructions;
-
-    // Read input data from txt file
-    fstream inputfile;
-
-    inputfile.open("input.txt", ios::in);
-    if (inputfile.is_open()){
-        string tp;
-        while (getline(inputfile, tp)){
-            instructions += tp;
-            instructions += "\n";
-        }
-    }
+    std::string inputData[numStacks] = {"WMLF", "BZVMF", "HVRSLQ", "FSVQPMTJ", "LSW", "FVPMRJW", "JQCPNRF", "VHPSZWRB", "BMJCGHZW"};
+    std::stack <char> stacks[numStacks];
+    std::string instructions = readInputText("input.txt");
 
     // Fill in the stacks
-
     for(int i = 0; i < numStacks; i++){
         for (char c : inputData[i]){
             stacks[i].push(c);
         }
     }
 
-    string instructionLine;
-    string word;
+    std::string instructionLine;
+    std::string word;
 
     int quantity = -1, initialStack = -1, targetStack = -1;
 
@@ -96,13 +98,13 @@ int main(){
             targetStack = -1;
         }
     }
-    string solution;
+    std::string solution;
 
     for(int i = 0; i < numStacks; i++){
         solution.push_back(stacks[i].top());
     }
 
-    cout << "The solution is " << solution;
+    std::cout << "The solution is " << solution << '\n';
 
     return 0;
 }
