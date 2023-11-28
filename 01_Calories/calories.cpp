@@ -1,11 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <numeric>
-
-using namespace std;
-
 /*
     Advent of Code 2022 - 01.12.2022
     
@@ -15,26 +7,38 @@ using namespace std;
 
 */
 
-int main(){
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <numeric>
 
-    // Read input data from txt file
-    fstream inputfile;
+// Read input data from txt file
+std::string readInputText(std::string inputText){
 
-    string inputData;
+    std::fstream inputfile;
+    std::string inputData;
 
-    inputfile.open("input.txt", ios::in);
-    if(inputfile.is_open()){
-        string tp;
-        while(getline(inputfile, tp)){
+    inputfile.open(inputText, std::ios::in);
+    if (inputfile.is_open()){
+        std::string tp;
+        while (getline(inputfile, tp)){
             inputData += tp;
             inputData += "\n";
         }
     }
+    return inputData;
+}
+
+
+int main(){
+
+    std::string inputData = readInputText("input.txt");
 
     // Now I need to find a double \n -> different elf
 
-    string tempNum = "";
-    vector <int> elfCount;
+    std::string tempNum = "";
+    std::vector <int> elfCount;
     bool lastCharWasLineBreak = false;
     int highestSumElf = 0;
     int secondHighest = 0;
@@ -72,11 +76,11 @@ int main(){
         }
     }
 
-    std::cout << "The highest is " << highestSumElf << endl;
+    std::cout << "The highest is " << highestSumElf << '\n';
     
     int topThree = highestSumElf + secondHighest + thirdHighest;
 
-    std::cout << "The top three carry " << topThree << endl;
+    std::cout << "The top three carry " << topThree << '\n';
 
     return 0;
 }
